@@ -1002,7 +1002,12 @@ void nrf_802154_pan_coord_set(bool enabled);
 bool nrf_802154_pan_coord_get(void);
 
 /**
- * @brief Adds the address of a peer node for which the provided ACK data is to be set.
+ * @brief Adds the address of a peer node for which the provided ACK data is to be set to the pending bit list.
+ * 
+ * Pending bit list works differently for Thread and Zigbee applications.
+ * In case of Thread, pending_bit is set for addresses found on the list.
+ * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
  *
  * @param[in]  p_addr    Array of bytes containing the address of the node (little-endian).
  * @param[in]  extended  If the given address is an extended MAC address or a short MAC address.
@@ -1020,9 +1025,14 @@ bool nrf_802154_ack_data_set(const uint8_t * p_addr,
                              uint8_t         data_type);
 
 /**
- * @brief Removes the address of a peer node for which the ACK data is set.
+ * @brief Removes the address of a peer node for which the ACK data is set from the pending bit list.
  *
  * The ACK data that was previously set for the given address is automatically removed.
+ * 
+ * Pending bit list works differently for Thread and Zigbee applications.
+ * In case of Thread, pending_bit is set for addresses found on the list.
+ * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
  *
  * @param[in]  p_addr    Array of bytes containing the address of the node (little-endian).
  * @param[in]  extended  If the given address is an extended MAC address or a short MAC address.
@@ -1055,8 +1065,13 @@ bool nrf_802154_ack_data_clear(const uint8_t * p_addr, bool extended, uint8_t da
 void nrf_802154_auto_pending_bit_set(bool enabled);
 
 /**
- * @brief Adds address of a peer node for which there is pending data in the buffer.
- *
+ * @brief Adds address of a peer node to the pending bit list. 
+ * 
+ * Pending bit list works differently for Thread and Zigbee applications.
+ * In case of Thread, pending_bit is set for addresses found on the list.
+ * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
+ * 
  * @note This function makes a copy of the given address.
  *
  * @param[in]  p_addr    Array of bytes containing the address of the node (little-endian).
@@ -1068,7 +1083,12 @@ void nrf_802154_auto_pending_bit_set(bool enabled);
 bool nrf_802154_pending_bit_for_addr_set(const uint8_t * p_addr, bool extended);
 
 /**
- * @brief Removes address of a peer node for which there is no more pending data in the buffer.
+ * @brief Removes address of a peer node from the pending bit list.
+ * 
+ * Pending bit list works differently for Thread and Zigbee applications.
+ * In case of Thread, pending_bit is set for addresses found on the list.
+ * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
  *
  * @param[in]  p_addr    Array of bytes containing the address of the node (little-endian).
  * @param[in]  extended  If the given address is an extended MAC address or a short MAC address.
@@ -1080,6 +1100,11 @@ bool nrf_802154_pending_bit_for_addr_clear(const uint8_t * p_addr, bool extended
 
 /**
  * @brief Removes all addresses of a given type from the pending bit list.
+ * 
+ * Pending bit list works differently for Thread and Zigbee applications.
+ * In case of Thread, pending_bit is set for addresses found on the list.
+ * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
  *
  * @param[in]  extended  If the function is to remove all extended MAC addresses or all short
  *                       addresses.

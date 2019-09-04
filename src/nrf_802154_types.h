@@ -139,6 +139,14 @@ typedef uint8_t nrf_802154_ack_data_t;
 #define NRF_802154_ACK_DATA_IE          0x01
 
 /**
+ * @brief Methods of source address matching.
+ */
+typedef uint8_t nrf_802154_src_match_t;
+
+#define NRF_802154_SRC_MATCH_THREAD 0x00
+#define NRF_802154_SRC_MATCH_ZIGBEE 0x01
+
+/**
  * @brief RSSI measurement results.
  */
 
