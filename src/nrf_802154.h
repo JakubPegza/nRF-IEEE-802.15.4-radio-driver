@@ -1001,6 +1001,20 @@ void nrf_802154_pan_coord_set(bool enabled);
  */
 bool nrf_802154_pan_coord_get(void);
 
+/** 
+ * @brief Select the source matching algorithm.
+ * 
+ * @note This method should only be called in the initialization phase.
+ * 
+ * When calling nrf_802154_ack_data_pending_bit_should_be_set_thread method, several different
+ * algorithms can be chosen to determine whether the pending bit should be set.
+ * 
+ * @see nrf_802154_src_match_t
+ * 
+ * @param[in]  match_method Source matching method to be used.
+ */
+void nrf_802154_src_matching_method(nrf_802154_src_match_t match_method);
+
 /**
  * @brief Adds the address of a peer node for which the provided ACK data is to be set to the pending bit list.
  * 

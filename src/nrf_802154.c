@@ -605,6 +605,11 @@ void nrf_802154_pan_coord_set(bool enabled)
     nrf_802154_pib_pan_coord_set(enabled);
 }
 
+void nrf_802154_src_matching_method(nrf_802154_src_match_t match_method)
+{
+    nrf_802154_ack_data_src_matching_method(match_method);
+}
+
 bool nrf_802154_ack_data_set(const uint8_t * p_addr,
                              bool            extended,
                              const void    * p_data,
