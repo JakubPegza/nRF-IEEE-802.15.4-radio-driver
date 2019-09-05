@@ -357,11 +357,11 @@ bool addr_match_zigbee(const uint8_t * p_frame)
 {
     bool ret = false;
 
-    uint8_t                              frame_type;
-    uint8_t                              command_type;
-    nrf_802154_frame_parser_mhr_data_t   mhr_fields;
-    const uint8_t                      * p_cmd = p_frame; 
-    uint32_t                             location;
+    uint8_t                            frame_type;
+    uint8_t                            command_type;
+    nrf_802154_frame_parser_mhr_data_t mhr_fields;
+    const uint8_t                    * p_cmd = p_frame;
+    uint32_t                           location;
 
     // Check the frame type.
     frame_type = (p_frame[FRAME_TYPE_OFFSET] & FRAME_TYPE_MASK);
@@ -369,10 +369,11 @@ bool addr_match_zigbee(const uint8_t * p_frame)
     // Parse the MAC header and retrieve the command type.
     if (nrf_802154_frame_parser_mhr_parse(p_frame, &mhr_fields))
     {
-        // Note: Security header is not included in the offset. 
-        // If security is to be used at any point, additional calculation 
+        // Note: Security header is not included in the offset.
+        // If security is to be used at any point, additional calculation
         // here or in nrf_802154_frame_parser_mhr_parse needs to be implemented.
         p_cmd += mhr_fields.addressing_end_offset;
+
         command_type = *p_cmd;
     }
     else
@@ -381,7 +382,7 @@ bool addr_match_zigbee(const uint8_t * p_frame)
         // Command type cannot be checked, as addressing_end_offset value will be invalid.
         return true;
     }
-    
+
     // Check frame type and command type.
     if (frame_type == FRAME_TYPE_COMMAND && command_type == MAC_CMD_DATA_REQ)
     {
@@ -390,17 +391,21 @@ bool addr_match_zigbee(const uint8_t * p_frame)
         if (mhr_fields.src_addr_size == SRC_ADDR_TYPE_SHORT)
         {
             // Return true if address is not found on the m_pending_bits list.
-            ret = !addr_index_find(mhr_fields.p_src_addr, &location, NRF_802154_ACK_DATA_PENDING_BIT, false);
+            ret = !addr_index_find(mhr_fields.p_src_addr,
+                                   &location,
+                                   NRF_802154_ACK_DATA_PENDING_BIT,
+                                   false);
         }
     }
     return ret;
 }
+
 /**
  * @brief Standard-compliant implementation of address matching algorithm.
- * 
+ *
  * Function always returns true. It is IEEE 802.15.4 compliant, as per 6.7.3.
  * Higher layer should ensure empty data frame with no AR is sent afterwards.
- * 
+ *
  * TODO: Provide complete implementation (requires parsing security header).
  *
  * @param[in]  p_frame  Pointer to the frame for which the ACK frame is being prepared.
@@ -673,7 +678,7 @@ void nrf_802154_ack_data_src_matching_method(uint8_t match_method)
     {
         assert(!"Unrecognized source matching method passed.");
     }
-    
+
 }
 
 bool nrf_802154_ack_data_pending_bit_should_be_set(const uint8_t * p_frame)
@@ -685,12 +690,15 @@ bool nrf_802154_ack_data_pending_bit_should_be_set(const uint8_t * p_frame)
         case NRF_802154_SRC_MATCH_THREAD:
             ret = addr_match_thread(p_frame);
             break;
+
         case NRF_802154_SRC_MATCH_ZIGBEE:
             ret = addr_match_zigbee(p_frame);
             break;
+
         case NRF_802154_SRC_MATCH_STANDARD:
             ret = addr_match_standard_compliant(p_frame);
             break;
+
         default:
             // Assume Thread as default.
             ret = addr_match_thread(p_frame);
