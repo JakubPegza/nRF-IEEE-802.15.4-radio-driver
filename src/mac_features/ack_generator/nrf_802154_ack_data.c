@@ -359,14 +359,12 @@ bool addr_match_zigbee(const uint8_t * p_frame)
 
     uint8_t                              frame_type;
     uint8_t                              command_type;
-    uint8_t                              frame_control[2];
     nrf_802154_frame_parser_mhr_data_t   mhr_fields;
     const uint8_t                      * p_cmd = p_frame; 
     uint32_t                             location;
 
     // Check the frame type.
-    memcpy(frame_control, p_frame, FCF_SIZE);
-    frame_type = (frame_control[0] & FRAME_TYPE_MASK);
+    frame_type = (p_frame[FRAME_TYPE_OFFSET] & FRAME_TYPE_MASK);
 
     // Parse the MAC header and retrieve the command type.
     if (nrf_802154_frame_parser_mhr_parse(p_frame, &mhr_fields))
@@ -396,6 +394,24 @@ bool addr_match_zigbee(const uint8_t * p_frame)
         }
     }
     return ret;
+}
+/**
+ * @brief Standard-compliant implementation of address matching algorithm.
+ * 
+ * Function always returns true. It is IEEE 802.15.4 compliant, as per 6.7.3.
+ * Higher layer should ensure empty data frame with no AR is sent afterwards.
+ * 
+ * TODO: Provide complete implementation (requires parsing security header).
+ *
+ * @param[in]  p_frame  Pointer to the frame for which the ACK frame is being prepared.
+ *
+ * @retval true   Pending bit is to be set.
+ * @retval false  Pending bit is to be cleared.
+ */
+bool addr_match_standard_compliant(const uint8_t * p_frame)
+{
+    (void)p_frame;
+    return true;
 }
 
 /**
@@ -568,7 +584,7 @@ void nrf_802154_ack_data_init(void)
     memset(&m_ie, 0, sizeof(m_ie));
 
     m_pending_bit.enabled = true;
-    m_src_matching_method    = NRF_802154_SRC_MATCH_THREAD;
+    m_src_matching_method = NRF_802154_SRC_MATCH_THREAD;
 }
 
 void nrf_802154_ack_data_enable(bool enabled)
@@ -648,7 +664,8 @@ void nrf_802154_ack_data_reset(bool extended, uint8_t data_type)
 void nrf_802154_ack_data_src_matching_method(uint8_t match_method)
 {
     if (match_method == NRF_802154_SRC_MATCH_THREAD ||
-        match_method == NRF_802154_SRC_MATCH_ZIGBEE)
+        match_method == NRF_802154_SRC_MATCH_ZIGBEE ||
+        match_method == NRF_802154_SRC_MATCH_STANDARD)
     {
         m_src_matching_method = match_method;
     }
@@ -670,6 +687,9 @@ bool nrf_802154_ack_data_pending_bit_should_be_set(const uint8_t * p_frame)
             break;
         case NRF_802154_SRC_MATCH_ZIGBEE:
             ret = addr_match_zigbee(p_frame);
+            break;
+        case NRF_802154_SRC_MATCH_STANDARD:
+            ret = addr_match_standard_compliant(p_frame);
             break;
         default:
             // Assume Thread as default.

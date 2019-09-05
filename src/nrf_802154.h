@@ -1021,6 +1021,9 @@ void nrf_802154_src_matching_method(nrf_802154_src_match_t match_method);
  * Pending bit list works differently for Thread and Zigbee applications.
  * In case of Thread, pending_bit is set for addresses found on the list.
  * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * In case of standard-compliant method, pending bit is always true, which requires
+ * empty data frame with AR set to 0 to be transmitted immediately afterwards.
+ * 
  * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
  *
  * @param[in]  p_addr    Array of bytes containing the address of the node (little-endian).
@@ -1046,6 +1049,9 @@ bool nrf_802154_ack_data_set(const uint8_t * p_addr,
  * Pending bit list works differently for Thread and Zigbee applications.
  * In case of Thread, pending_bit is set for addresses found on the list.
  * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * In case of standard-compliant method, pending bit is always true, which requires
+ * empty data frame with AR set to 0 to be transmitted immediately afterwards.
+ * 
  * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
  *
  * @param[in]  p_addr    Array of bytes containing the address of the node (little-endian).
@@ -1084,6 +1090,9 @@ void nrf_802154_auto_pending_bit_set(bool enabled);
  * Pending bit list works differently for Thread and Zigbee applications.
  * In case of Thread, pending_bit is set for addresses found on the list.
  * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * In case of standard-compliant method, pending bit is always true, which requires
+ * empty data frame with AR set to 0 to be transmitted immediately afterwards.
+ * 
  * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
  * 
  * @note This function makes a copy of the given address.
@@ -1102,6 +1111,9 @@ bool nrf_802154_pending_bit_for_addr_set(const uint8_t * p_addr, bool extended);
  * Pending bit list works differently for Thread and Zigbee applications.
  * In case of Thread, pending_bit is set for addresses found on the list.
  * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * In case of standard-compliant method, pending bit is always true, which requires
+ * empty data frame with AR set to 0 to be transmitted immediately afterwards.
+ * 
  * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
  *
  * @param[in]  p_addr    Array of bytes containing the address of the node (little-endian).
@@ -1118,6 +1130,9 @@ bool nrf_802154_pending_bit_for_addr_clear(const uint8_t * p_addr, bool extended
  * Pending bit list works differently for Thread and Zigbee applications.
  * In case of Thread, pending_bit is set for addresses found on the list.
  * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * In case of standard-compliant method, pending bit is always true, which requires
+ * empty data frame with AR set to 0 to be transmitted immediately afterwards.
+ * 
  * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
  *
  * @param[in]  extended  If the function is to remove all extended MAC addresses or all short
