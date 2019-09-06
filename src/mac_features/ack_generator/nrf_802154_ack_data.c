@@ -43,7 +43,6 @@
 #include "mac_features/nrf_802154_frame_parser.h"
 #include "nrf_802154_config.h"
 #include "nrf_802154_const.h"
-#include "nrf_802154_types.h"
 
 /// Maximum number of Short Addresses of nodes for which there is ACK data to set.
 #define NUM_SHORT_ADDRESSES    NRF_802154_PENDING_SHORT_ADDRESSES
@@ -669,7 +668,7 @@ void nrf_802154_ack_data_reset(bool extended, uint8_t data_type)
     }
 }
 
-void nrf_802154_ack_data_src_matching_method(uint8_t match_method)
+void nrf_802154_ack_data_src_matching_method(nrf_802154_src_match_t match_method)
 {
     switch (match_method)
     {

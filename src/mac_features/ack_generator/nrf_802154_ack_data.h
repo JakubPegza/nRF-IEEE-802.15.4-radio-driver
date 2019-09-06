@@ -40,6 +40,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "nrf_802154_types.h"
+
 /**
  * @brief Initializes the ACK data generator module.
  */
@@ -107,11 +109,9 @@ void nrf_802154_ack_data_reset(bool extended, uint8_t data_type);
  * When calling @ref nrf_802154_ack_data_pending_bit_should_be_set method, several different
  * algorithms can be chosen to determine whether the pending bit should be set.
  *
- * @see nrf_802154_src_match_t
- *
  * @param[in]  match_method Source matching method to be used.
  */
-void nrf_802154_ack_data_src_matching_method(uint8_t match_method);
+void nrf_802154_ack_data_src_matching_method(nrf_802154_src_match_t match_method);
 
 /**
  * @brief Checks if a pending bit is to be set in the ACK frame sent in response to a given frame.
