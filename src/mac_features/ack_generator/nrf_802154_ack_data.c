@@ -363,6 +363,12 @@ bool addr_match_zigbee(const uint8_t * p_frame)
     const uint8_t                    * p_cmd = p_frame;
     uint32_t                           location;
 
+    // If ack data generator module is disabled do not perform check, return true by default.
+    if (!m_pending_bit.enabled)
+    {
+        return true;
+    }
+
     // Check the frame type.
     frame_type = (p_frame[FRAME_TYPE_OFFSET] & FRAME_TYPE_MASK);
 
