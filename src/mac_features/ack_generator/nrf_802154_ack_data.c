@@ -330,14 +330,14 @@ static bool addr_index_find(const uint8_t * p_addr,
  * @retval true   Pending bit is to be set.
  * @retval false  Pending bit is to be cleared.
  */
-bool addr_match_thread(const uint8_t * p_frame)
+static bool addr_match_thread(const uint8_t * p_frame)
 {
     bool            extended;
     uint32_t        location;
     const uint8_t * p_src_addr = nrf_802154_frame_parser_src_addr_get(p_frame, &extended);
 
     // The pending bit is set by default.
-    if (!m_pending_bit.enabled || NULL == p_src_addr)
+    if (!m_pending_bit.enabled || (NULL == p_src_addr))
     {
         return true;
     }
@@ -353,12 +353,11 @@ bool addr_match_thread(const uint8_t * p_frame)
  * @retval true   Pending bit is to be set.
  * @retval false  Pending bit is to be cleared.
  */
-bool addr_match_zigbee(const uint8_t * p_frame)
+static bool addr_match_zigbee(const uint8_t * p_frame)
 {
     bool ret = false;
 
     uint8_t                            frame_type;
-    uint8_t                            command_type;
     nrf_802154_frame_parser_mhr_data_t mhr_fields;
     const uint8_t                    * p_cmd = p_frame;
     uint32_t                           location;
@@ -377,10 +376,8 @@ bool addr_match_zigbee(const uint8_t * p_frame)
     {
         // Note: Security header is not included in the offset.
         // If security is to be used at any point, additional calculation
-        // here or in nrf_802154_frame_parser_mhr_parse needs to be implemented.
+        // in nrf_802154_frame_parser_mhr_parse needs to be implemented.
         p_cmd += mhr_fields.addressing_end_offset;
-
-        command_type = *p_cmd;
     }
     else
     {
@@ -390,9 +387,8 @@ bool addr_match_zigbee(const uint8_t * p_frame)
     }
 
     // Check frame type and command type.
-    if (frame_type == FRAME_TYPE_COMMAND && command_type == MAC_CMD_DATA_REQ)
+    if ((frame_type == FRAME_TYPE_COMMAND) && (*p_cmd == MAC_CMD_DATA_REQ))
     {
-        ret = true;
         // Check addressing type - in long case address, pb should always be 1.
         if (mhr_fields.src_addr_size == SRC_ADDR_TYPE_SHORT)
         {
@@ -401,6 +397,10 @@ bool addr_match_zigbee(const uint8_t * p_frame)
                                    &location,
                                    NRF_802154_ACK_DATA_PENDING_BIT,
                                    false);
+        }
+        else
+        {
+            ret = true;
         }
     }
     return ret;
@@ -412,14 +412,11 @@ bool addr_match_zigbee(const uint8_t * p_frame)
  * Function always returns true. It is IEEE 802.15.4 compliant, as per 6.7.3.
  * Higher layer should ensure empty data frame with no AR is sent afterwards.
  *
- * TODO: Provide complete implementation (requires parsing security header).
- *
  * @param[in]  p_frame  Pointer to the frame for which the ACK frame is being prepared.
  *
  * @retval true   Pending bit is to be set.
- * @retval false  Pending bit is to be cleared.
  */
-bool addr_match_standard_compliant(const uint8_t * p_frame)
+static bool addr_match_standard_compliant(const uint8_t * p_frame)
 {
     (void)p_frame;
     return true;
@@ -674,22 +671,23 @@ void nrf_802154_ack_data_reset(bool extended, uint8_t data_type)
 
 void nrf_802154_ack_data_src_matching_method(uint8_t match_method)
 {
-    if (match_method == NRF_802154_SRC_MATCH_THREAD ||
-        match_method == NRF_802154_SRC_MATCH_ZIGBEE ||
-        match_method == NRF_802154_SRC_MATCH_STANDARD)
+    switch (match_method)
     {
-        m_src_matching_method = match_method;
-    }
-    else
-    {
-        assert(!"Unrecognized source matching method passed.");
+        case NRF_802154_SRC_MATCH_THREAD:
+        case NRF_802154_SRC_MATCH_ZIGBEE:
+        case NRF_802154_SRC_MATCH_ALWAYS_1:
+            m_src_matching_method = match_method;
+            break;
+
+        default:
+            assert(!"Unrecognized source matching method passed.");
     }
 
 }
 
 bool nrf_802154_ack_data_pending_bit_should_be_set(const uint8_t * p_frame)
 {
-    bool ret = false;
+    bool ret;
 
     switch (m_src_matching_method)
     {
@@ -701,13 +699,12 @@ bool nrf_802154_ack_data_pending_bit_should_be_set(const uint8_t * p_frame)
             ret = addr_match_zigbee(p_frame);
             break;
 
-        case NRF_802154_SRC_MATCH_STANDARD:
+        case NRF_802154_SRC_MATCH_ALWAYS_1:
             ret = addr_match_standard_compliant(p_frame);
             break;
 
         default:
-            // Assume Thread as default.
-            ret = addr_match_thread(p_frame);
+            assert(!"Invalid source matching method selected.");
     }
 
     return ret;

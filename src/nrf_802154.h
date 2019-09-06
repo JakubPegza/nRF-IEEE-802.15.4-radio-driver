@@ -1004,27 +1004,25 @@ bool nrf_802154_pan_coord_get(void);
 /**
  * @brief Select the source matching algorithm.
  *
- * @note This method should only be called in the initialization phase.
+ * @note This method should be called after driver initialization, but before transceiver is enabled.
  *
  * When calling nrf_802154_ack_data_pending_bit_should_be_set_thread method, several different
- * algorithms can be chosen to determine whether the pending bit should be set.
- *
- * @see nrf_802154_src_match_t
+ * algorithms can be chosen to determine whether the pending bit in ack should be set.
  *
  * @param[in]  match_method Source matching method to be used.
  */
 void nrf_802154_src_matching_method(nrf_802154_src_match_t match_method);
 
 /**
- * @brief Adds the address of a peer node for which the provided ACK data is to be set to the pending bit list.
+ * @brief Adds the address of a peer node for which the provided ACK data is to be added to the pending bit list.
  *
  * Pending bit list works differently for Thread and Zigbee applications.
- * In case of Thread, pending_bit is set for addresses found on the list.
- * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * In case of Thread, pending_bit is set only for the addresses found in the list.
+ * In case of Zigbee, pending_bit is cleared only for the short addresses found in the list.
  * In case of standard-compliant method, pending bit is always true, which requires
  * empty data frame with AR set to 0 to be transmitted immediately afterwards.
  *
- * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
+ * Used method can be set during initialization phase by calling @ref nrf_802154_src_matching_method.
  *
  * @param[in]  p_addr    Array of bytes containing the address of the node (little-endian).
  * @param[in]  extended  If the given address is an extended MAC address or a short MAC address.
@@ -1047,12 +1045,12 @@ bool nrf_802154_ack_data_set(const uint8_t * p_addr,
  * The ACK data that was previously set for the given address is automatically removed.
  *
  * Pending bit list works differently for Thread and Zigbee applications.
- * In case of Thread, pending_bit is set for addresses found on the list.
- * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * In case of Thread, pending_bit is set only for the addresses found in the list.
+ * In case of Zigbee, pending_bit is cleared only for the short addresses found in the list.
  * In case of standard-compliant method, pending bit is always true, which requires
  * empty data frame with AR set to 0 to be transmitted immediately afterwards.
  *
- * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
+ * Used method can be set during initialization phase by calling @ref nrf_802154_src_matching_method.
  *
  * @param[in]  p_addr    Array of bytes containing the address of the node (little-endian).
  * @param[in]  extended  If the given address is an extended MAC address or a short MAC address.
@@ -1088,12 +1086,12 @@ void nrf_802154_auto_pending_bit_set(bool enabled);
  * @brief Adds address of a peer node to the pending bit list.
  *
  * Pending bit list works differently for Thread and Zigbee applications.
- * In case of Thread, pending_bit is set for addresses found on the list.
- * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * In case of Thread, pending_bit is set only for the addresses found in the list.
+ * In case of Zigbee, pending_bit is cleared only for the short addresses found in the list.
  * In case of standard-compliant method, pending bit is always true, which requires
  * empty data frame with AR set to 0 to be transmitted immediately afterwards.
  *
- * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
+ * Used method can be set during initialization phase by calling @ref nrf_802154_src_matching_method.
  *
  * @note This function makes a copy of the given address.
  *
@@ -1109,12 +1107,12 @@ bool nrf_802154_pending_bit_for_addr_set(const uint8_t * p_addr, bool extended);
  * @brief Removes address of a peer node from the pending bit list.
  *
  * Pending bit list works differently for Thread and Zigbee applications.
- * In case of Thread, pending_bit is set for addresses found on the list.
- * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * In case of Thread, pending_bit is set only for the addresses found in the list.
+ * In case of Zigbee, pending_bit is cleared only for the short addresses found in the list.
  * In case of standard-compliant method, pending bit is always true, which requires
  * empty data frame with AR set to 0 to be transmitted immediately afterwards.
  *
- * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
+ * Used method can be set during initialization phase by calling @ref nrf_802154_src_matching_method.
  *
  * @param[in]  p_addr    Array of bytes containing the address of the node (little-endian).
  * @param[in]  extended  If the given address is an extended MAC address or a short MAC address.
@@ -1128,12 +1126,12 @@ bool nrf_802154_pending_bit_for_addr_clear(const uint8_t * p_addr, bool extended
  * @brief Removes all addresses of a given type from the pending bit list.
  *
  * Pending bit list works differently for Thread and Zigbee applications.
- * In case of Thread, pending_bit is set for addresses found on the list.
- * In case of Zigbee, pending_bit is set for short addresses not found on the list.
+ * In case of Thread, pending_bit is set only for the addresses found in the list.
+ * In case of Zigbee, pending_bit is cleared only for the short addresses found in the list.
  * In case of standard-compliant method, pending bit is always true, which requires
  * empty data frame with AR set to 0 to be transmitted immediately afterwards.
  *
- * Used method can be set during initialization phase by calling nrf_802154_src_matching_method.
+ * Used method can be set during initialization phase by calling @ref nrf_802154_src_matching_method.
  *
  * @param[in]  extended  If the function is to remove all extended MAC addresses or all short
  *                       addresses.
