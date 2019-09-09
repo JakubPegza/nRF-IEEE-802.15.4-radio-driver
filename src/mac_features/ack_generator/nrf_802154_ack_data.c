@@ -388,7 +388,7 @@ static bool addr_match_zigbee(const uint8_t * p_frame)
     if ((frame_type == FRAME_TYPE_COMMAND) && (*p_cmd == MAC_CMD_DATA_REQ))
     {
         // Check addressing type - in long case address, pb should always be 1.
-        if (mhr_fields.src_addr_size == SRC_ADDR_TYPE_SHORT)
+        if (mhr_fields.src_addr_size == SHORT_ADDRESS_SIZE)
         {
             // Return true if address is not found on the m_pending_bits list.
             ret = !addr_index_find(mhr_fields.p_src_addr,

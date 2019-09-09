@@ -61,14 +61,14 @@ static uint8_t test_addr_short_1[SHORT_ADDRESS_SIZE]       = { 0x12, 0x23 };
 static nrf_802154_frame_parser_mhr_data_t test_mhr_data_short    = 
 {
     .p_src_addr = &(test_psdu_short[8]),
-    .src_addr_size = SRC_ADDR_TYPE_SHORT,
+    .src_addr_size = SHORT_ADDRESS_SIZE,
     .addressing_end_offset = 10
 };
 
 static nrf_802154_frame_parser_mhr_data_t test_mhr_data_extended = 
 {
     .p_src_addr = test_addr_extended_1,
-    .src_addr_size = SRC_ADDR_TYPE_EXTENDED,
+    .src_addr_size = EXTENDED_ADDRESS_SIZE,
     .addressing_end_offset = 22
 };
 
