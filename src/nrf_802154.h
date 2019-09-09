@@ -1006,19 +1006,22 @@ bool nrf_802154_pan_coord_get(void);
  *
  * @note This method should be called after driver initialization, but before transceiver is enabled.
  *
- * When calling nrf_802154_ack_data_pending_bit_should_be_set_thread method, several different
- * algorithms can be chosen to determine whether the pending bit in ack should be set.
+ * When calling @ref nrf_802154_ack_data_pending_bit_should_be_set method, it will choose one of
+ * several source address matching algorithms. In order for specific algorithm to be chosen, this
+ * function should be called beforehand.
  *
- * @param[in]  match_method Source matching method to be used.
+ * @param[in]  match_method Source address matching method to be used.
  */
-void nrf_802154_src_matching_method(nrf_802154_src_match_t match_method);
+void nrf_802154_src_addr_matching_method_set(nrf_802154_src_addr_match_t match_method);
 
 /**
- * @brief Adds the address of a peer node for which the provided ACK data is to be added to the pending bit list.
+ * @brief Adds the address of a peer node for which the provided ACK data
+ * is to be added to the pending bit list.
  *
- * Pending bit list works differently for Thread and Zigbee applications.
- * In case of Thread, pending_bit is set only for the addresses found in the list.
- * In case of Zigbee, pending_bit is cleared only for the short addresses found in the list.
+ * Pending bit list works differently, depending on upper layer for which the source
+ * address matching method is selected.
+ * In case of Thread, pending bit is set only for the addresses found in the list.
+ * In case of Zigbee, pending bit is cleared only for the short addresses found in the list.
  * In case of standard-compliant method, pending bit is always true, which requires
  * empty data frame with AR set to 0 to be transmitted immediately afterwards.
  *
@@ -1044,9 +1047,10 @@ bool nrf_802154_ack_data_set(const uint8_t * p_addr,
  *
  * The ACK data that was previously set for the given address is automatically removed.
  *
- * Pending bit list works differently for Thread and Zigbee applications.
- * In case of Thread, pending_bit is set only for the addresses found in the list.
- * In case of Zigbee, pending_bit is cleared only for the short addresses found in the list.
+ * Pending bit list works differently, depending on upper layer for which the source
+ * address matching method is selected.
+ * In case of Thread, pending bit is set only for the addresses found in the list.
+ * In case of Zigbee, pending bit is cleared only for the short addresses found in the list.
  * In case of standard-compliant method, pending bit is always true, which requires
  * empty data frame with AR set to 0 to be transmitted immediately afterwards.
  *
@@ -1085,9 +1089,10 @@ void nrf_802154_auto_pending_bit_set(bool enabled);
 /**
  * @brief Adds address of a peer node to the pending bit list.
  *
- * Pending bit list works differently for Thread and Zigbee applications.
- * In case of Thread, pending_bit is set only for the addresses found in the list.
- * In case of Zigbee, pending_bit is cleared only for the short addresses found in the list.
+ * Pending bit list works differently, depending on upper layer for which the source
+ * address matching method is selected.
+ * In case of Thread, pending bit is set only for the addresses found in the list.
+ * In case of Zigbee, pending bit is cleared only for the short addresses found in the list.
  * In case of standard-compliant method, pending bit is always true, which requires
  * empty data frame with AR set to 0 to be transmitted immediately afterwards.
  *
@@ -1106,9 +1111,10 @@ bool nrf_802154_pending_bit_for_addr_set(const uint8_t * p_addr, bool extended);
 /**
  * @brief Removes address of a peer node from the pending bit list.
  *
- * Pending bit list works differently for Thread and Zigbee applications.
- * In case of Thread, pending_bit is set only for the addresses found in the list.
- * In case of Zigbee, pending_bit is cleared only for the short addresses found in the list.
+ * Pending bit list works differently, depending on upper layer for which the source
+ * address matching method is selected.
+ * In case of Thread, pending bit is set only for the addresses found in the list.
+ * In case of Zigbee, pending bit is cleared only for the short addresses found in the list.
  * In case of standard-compliant method, pending bit is always true, which requires
  * empty data frame with AR set to 0 to be transmitted immediately afterwards.
  *
@@ -1125,9 +1131,10 @@ bool nrf_802154_pending_bit_for_addr_clear(const uint8_t * p_addr, bool extended
 /**
  * @brief Removes all addresses of a given type from the pending bit list.
  *
- * Pending bit list works differently for Thread and Zigbee applications.
- * In case of Thread, pending_bit is set only for the addresses found in the list.
- * In case of Zigbee, pending_bit is cleared only for the short addresses found in the list.
+ * Pending bit list works differently, depending on upper layer for which the source
+ * address matching method is selected.
+ * In case of Thread, pending bit is set only for the addresses found in the list.
+ * In case of Zigbee, pending bit is cleared only for the short addresses found in the list.
  * In case of standard-compliant method, pending bit is always true, which requires
  * empty data frame with AR set to 0 to be transmitted immediately afterwards.
  *

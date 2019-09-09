@@ -104,14 +104,15 @@ void nrf_802154_ack_data_reset(bool extended, uint8_t data_type);
 /**
  * @brief Select the source matching algorithm.
  *
- * @note This method should only be called in the initialization phase.
+ * @note This method should be called after driver initialization, but before transceiver is enabled.
  *
- * When calling @ref nrf_802154_ack_data_pending_bit_should_be_set method, several different
- * algorithms can be chosen to determine whether the pending bit should be set.
+ * When calling @ref nrf_802154_ack_data_pending_bit_should_be_set method, it will choose one of
+ * several source address matching algorithms. In order for specific algorithm to be chosen, this
+ * function should be called beforehand.
  *
  * @param[in]  match_method Source matching method to be used.
  */
-void nrf_802154_ack_data_src_matching_method(nrf_802154_src_match_t match_method);
+void nrf_802154_ack_data_src_addr_matching_method_set(nrf_802154_src_addr_match_t match_method);
 
 /**
  * @brief Checks if a pending bit is to be set in the ACK frame sent in response to a given frame.

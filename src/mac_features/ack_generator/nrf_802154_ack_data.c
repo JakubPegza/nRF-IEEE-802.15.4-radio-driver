@@ -90,9 +90,9 @@ typedef struct
 } ie_arrays_t;
 
 // TODO: Combine below arrays to perform binary search only once per Ack generation.
-static pending_bit_arrays_t   m_pending_bit;
-static ie_arrays_t            m_ie;
-static nrf_802154_src_match_t m_src_matching_method;
+static pending_bit_arrays_t        m_pending_bit;
+static ie_arrays_t                 m_ie;
+static nrf_802154_src_addr_match_t m_src_matching_method;
 
 /***************************************************************************************************
  * @section Array handling helper functions
@@ -354,12 +354,11 @@ static bool addr_match_thread(const uint8_t * p_frame)
  */
 static bool addr_match_zigbee(const uint8_t * p_frame)
 {
-    bool ret = false;
-
     uint8_t                            frame_type;
     nrf_802154_frame_parser_mhr_data_t mhr_fields;
-    const uint8_t                    * p_cmd = p_frame;
     uint32_t                           location;
+    const uint8_t                    * p_cmd = p_frame;
+    bool                               ret   = false;
 
     // If ack data generator module is disabled do not perform check, return true by default.
     if (!m_pending_bit.enabled)
@@ -402,6 +401,7 @@ static bool addr_match_zigbee(const uint8_t * p_frame)
             ret = true;
         }
     }
+
     return ret;
 }
 
@@ -591,7 +591,7 @@ void nrf_802154_ack_data_init(void)
     memset(&m_ie, 0, sizeof(m_ie));
 
     m_pending_bit.enabled = true;
-    m_src_matching_method = NRF_802154_SRC_MATCH_THREAD;
+    m_src_matching_method = NRF_802154_SRC_ADDR_MATCH_THREAD;
 }
 
 void nrf_802154_ack_data_enable(bool enabled)
@@ -668,13 +668,13 @@ void nrf_802154_ack_data_reset(bool extended, uint8_t data_type)
     }
 }
 
-void nrf_802154_ack_data_src_matching_method(nrf_802154_src_match_t match_method)
+void nrf_802154_ack_data_src_addr_matching_method_set(nrf_802154_src_addr_match_t match_method)
 {
     switch (match_method)
     {
-        case NRF_802154_SRC_MATCH_THREAD:
-        case NRF_802154_SRC_MATCH_ZIGBEE:
-        case NRF_802154_SRC_MATCH_ALWAYS_1:
+        case NRF_802154_SRC_ADDR_MATCH_THREAD:
+        case NRF_802154_SRC_ADDR_MATCH_ZIGBEE:
+        case NRF_802154_SRC_ADDR_MATCH_ALWAYS_1:
             m_src_matching_method = match_method;
             break;
 
@@ -690,15 +690,15 @@ bool nrf_802154_ack_data_pending_bit_should_be_set(const uint8_t * p_frame)
 
     switch (m_src_matching_method)
     {
-        case NRF_802154_SRC_MATCH_THREAD:
+        case NRF_802154_SRC_ADDR_MATCH_THREAD:
             ret = addr_match_thread(p_frame);
             break;
 
-        case NRF_802154_SRC_MATCH_ZIGBEE:
+        case NRF_802154_SRC_ADDR_MATCH_ZIGBEE:
             ret = addr_match_zigbee(p_frame);
             break;
 
-        case NRF_802154_SRC_MATCH_ALWAYS_1:
+        case NRF_802154_SRC_ADDR_MATCH_ALWAYS_1:
             ret = addr_match_standard_compliant(p_frame);
             break;
 
