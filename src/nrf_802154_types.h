@@ -139,6 +139,15 @@ typedef uint8_t nrf_802154_ack_data_t;
 #define NRF_802154_ACK_DATA_IE          0x01
 
 /**
+ * @brief Methods of source address matching.
+ */
+typedef uint8_t nrf_802154_src_addr_match_t;
+
+#define NRF_802154_SRC_ADDR_MATCH_THREAD   0x00 // !< Implementation for Thread protocol.
+#define NRF_802154_SRC_ADDR_MATCH_ZIGBEE   0x01 // !< Implementation for ZigBee protocol.
+#define NRF_802154_SRC_ADDR_MATCH_ALWAYS_1 0x02 // !< Standard-compliant implementation - Pending bit is always set to 1.
+
+/**
  * @brief RSSI measurement results.
  */
 
