@@ -679,7 +679,7 @@ void nrf_802154_ack_data_src_addr_matching_method_set(nrf_802154_src_addr_match_
             break;
 
         default:
-            assert(!"Unrecognized source matching method passed.");
+            assert(false);
     }
 
 }
@@ -703,7 +703,7 @@ bool nrf_802154_ack_data_pending_bit_should_be_set(const uint8_t * p_frame)
             break;
 
         default:
-            assert(!"Invalid source matching method selected.");
+            assert(false);
     }
 
     return ret;
