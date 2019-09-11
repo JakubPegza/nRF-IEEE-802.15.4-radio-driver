@@ -88,15 +88,15 @@
 #define KEY_ID_MODE_2                0x10                                         ///< Bits containing the 0x10 Key Identifier Mode.
 #define KEY_ID_MODE_3                0x18                                         ///< Bits containing the 0x11 Key Identifier Mode.
 
-#define MAC_CMD_ASSOC_REQ            0x01                                         ///< MAC Association request command frame identifier.
-#define MAC_CMD_ASSOC_RESP           0x02                                         ///< MAC Association response command frame identifier.
-#define MAC_CMD_DISASSOC_NOTIFY      0x03                                         ///< MAC Disaccociation notification command frame identifier.
-#define MAC_CMD_DATA_REQ             0x04                                         ///< MAC Data Requests command frame identifier.
-#define MAC_CMD_PANID_CONFLICT       0x05                                         ///< MAC PAN ID conflict notification command frame identifier.
-#define MAC_CMD_ORPHAN_NOTIFY        0x06                                         ///< MAC Orphan notification command frame identifier.
-#define MAC_CMD_BEACON_REQ           0x07                                         ///< MAC Beacon requestcommand frame identifier.
-#define MAC_CMD_COORD_REALIGN        0x08                                         ///< MAC Coordinator realignment command frame identifier.
-#define MAC_CMD_GTS_REQUEST          0x09                                         ///< MAC GTS request command frame identifier.
+#define MAC_CMD_ASSOC_REQ            0x01                                         ///< Command frame identifier for MAC Association request.
+#define MAC_CMD_ASSOC_RESP           0x02                                         ///< Command frame identifier for MAC Association response.
+#define MAC_CMD_DISASSOC_NOTIFY      0x03                                         ///< Command frame identifier for MAC Disaccociation notification.
+#define MAC_CMD_DATA_REQ             0x04                                         ///< Command frame identifier for MAC Data Requests.
+#define MAC_CMD_PANID_CONFLICT       0x05                                         ///< Command frame identifier for MAC PAN ID conflict notification.
+#define MAC_CMD_ORPHAN_NOTIFY        0x06                                         ///< Command frame identifier for MAC Orphan notification.
+#define MAC_CMD_BEACON_REQ           0x07                                         ///< Command frame identifier for MAC Beacon.
+#define MAC_CMD_COORD_REALIGN        0x08                                         ///< Command frame identifier for MAC Coordinator realignment.
+#define MAC_CMD_GTS_REQUEST          0x09                                         ///< Command frame identifier for MAC GTS request.
 
 #define PAN_ID_COMPR_OFFSET          1                                            ///< Byte containing the PAN ID compression bit (+1 for the frame length byte).
 #define PAN_ID_COMPR_MASK            0x40                                         ///< PAN ID compression bit.

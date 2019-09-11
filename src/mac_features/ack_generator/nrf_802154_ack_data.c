@@ -322,7 +322,7 @@ static bool addr_index_find(const uint8_t * p_addr,
 }
 
 /**
- * @brief Thread implementation of address matching algorithm.
+ * @brief Thread implementation of the address matching algorithm.
  *
  * @param[in]  p_frame  Pointer to the frame for which the ACK frame is being prepared.
  *
@@ -345,7 +345,7 @@ static bool addr_match_thread(const uint8_t * p_frame)
 }
 
 /**
- * @brief ZigBee implementation of address matching algorithm.
+ * @brief Zigbee implementation of the address matching algorithm.
  *
  * @param[in]  p_frame  Pointer to the frame for which the ACK frame is being prepared.
  *
@@ -406,7 +406,7 @@ static bool addr_match_zigbee(const uint8_t * p_frame)
 }
 
 /**
- * @brief Standard-compliant implementation of address matching algorithm.
+ * @brief Standard-compliant implementation of the address matching algorithm.
  *
  * Function always returns true. It is IEEE 802.15.4 compliant, as per 6.7.3.
  * Higher layer should ensure empty data frame with no AR is sent afterwards.

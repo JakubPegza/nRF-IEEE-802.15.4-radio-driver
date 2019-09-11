@@ -1006,9 +1006,9 @@ bool nrf_802154_pan_coord_get(void);
  *
  * @note This method should be called after driver initialization, but before transceiver is enabled.
  *
- * When calling @ref nrf_802154_ack_data_pending_bit_should_be_set method, it will choose one of
- * several source address matching algorithms. In order for specific algorithm to be chosen, this
- * function should be called beforehand.
+ * When calling @ref nrf_802154_ack_data_pending_bit_should_be_set, one of several algorithms 
+ * for source address matching will be chosen. To ensure a specific algorithm is selected, 
+ * call this function before @ref rf_802154_ack_data_pending_bit_should_be_set.
  *
  * @param[in]  match_method Source address matching method to be used.
  */
@@ -1018,14 +1018,15 @@ void nrf_802154_src_addr_matching_method_set(nrf_802154_src_addr_match_t match_m
  * @brief Adds the address of a peer node for which the provided ACK data
  * is to be added to the pending bit list.
  *
- * Pending bit list works differently, depending on upper layer for which the source
+ * The pending bit list works differently, depending on the upper layer for which the source
  * address matching method is selected.
- * In case of Thread, pending bit is set only for the addresses found in the list.
- * In case of Zigbee, pending bit is cleared only for the short addresses found in the list.
- * In case of standard-compliant method, pending bit is always true, which requires
- * empty data frame with AR set to 0 to be transmitted immediately afterwards.
+ * 
+ * For Thread, @ref NRF_802154_SRC_ADDR_MATCH_THREAD
+ * For Zigbee, @ref NRF_802154_SRC_ADDR_MATCH_ZIGBEE
+ * For Standard-compliant, @ref NRF_802154_SRC_ADDR_MATCH_ALWAYS_1
  *
- * Used method can be set during initialization phase by calling @ref nrf_802154_src_matching_method.
+ * The source address matching method can be set during the initialization phase 
+ * by calling @ref nrf_802154_src_matching_method.
  *
  * @param[in]  p_addr    Array of bytes containing the address of the node (little-endian).
  * @param[in]  extended  If the given address is an extended MAC address or a short MAC address.
@@ -1047,12 +1048,12 @@ bool nrf_802154_ack_data_set(const uint8_t * p_addr,
  *
  * The ACK data that was previously set for the given address is automatically removed.
  *
- * Pending bit list works differently, depending on upper layer for which the source
+ * The pending bit list works differently, depending on the upper layer for which the source
  * address matching method is selected.
- * In case of Thread, pending bit is set only for the addresses found in the list.
- * In case of Zigbee, pending bit is cleared only for the short addresses found in the list.
- * In case of standard-compliant method, pending bit is always true, which requires
- * empty data frame with AR set to 0 to be transmitted immediately afterwards.
+ * 
+ * For Thread, @ref NRF_802154_SRC_ADDR_MATCH_THREAD
+ * For Zigbee, @ref NRF_802154_SRC_ADDR_MATCH_ZIGBEE
+ * For Standard-compliant, @ref NRF_802154_SRC_ADDR_MATCH_ALWAYS_1
  *
  * Used method can be set during initialization phase by calling @ref nrf_802154_src_matching_method.
  *
@@ -1087,14 +1088,14 @@ bool nrf_802154_ack_data_clear(const uint8_t * p_addr, bool extended, uint8_t da
 void nrf_802154_auto_pending_bit_set(bool enabled);
 
 /**
- * @brief Adds address of a peer node to the pending bit list.
+ * @brief Adds the address of a peer node to the pending bit list.
  *
- * Pending bit list works differently, depending on upper layer for which the source
+ * The pending bit list works differently, depending on the upper layer for which the source
  * address matching method is selected.
- * In case of Thread, pending bit is set only for the addresses found in the list.
- * In case of Zigbee, pending bit is cleared only for the short addresses found in the list.
- * In case of standard-compliant method, pending bit is always true, which requires
- * empty data frame with AR set to 0 to be transmitted immediately afterwards.
+ * 
+ * For Thread, @ref NRF_802154_SRC_ADDR_MATCH_THREAD
+ * For Zigbee, @ref NRF_802154_SRC_ADDR_MATCH_ZIGBEE
+ * For Standard-compliant, @ref NRF_802154_SRC_ADDR_MATCH_ALWAYS_1
  *
  * Used method can be set during initialization phase by calling @ref nrf_802154_src_matching_method.
  *
@@ -1111,12 +1112,12 @@ bool nrf_802154_pending_bit_for_addr_set(const uint8_t * p_addr, bool extended);
 /**
  * @brief Removes address of a peer node from the pending bit list.
  *
- * Pending bit list works differently, depending on upper layer for which the source
+ * The pending bit list works differently, depending on the upper layer for which the source
  * address matching method is selected.
- * In case of Thread, pending bit is set only for the addresses found in the list.
- * In case of Zigbee, pending bit is cleared only for the short addresses found in the list.
- * In case of standard-compliant method, pending bit is always true, which requires
- * empty data frame with AR set to 0 to be transmitted immediately afterwards.
+ * 
+ * For Thread, @ref NRF_802154_SRC_ADDR_MATCH_THREAD
+ * For Zigbee, @ref NRF_802154_SRC_ADDR_MATCH_ZIGBEE
+ * For Standard-compliant, @ref NRF_802154_SRC_ADDR_MATCH_ALWAYS_1
  *
  * Used method can be set during initialization phase by calling @ref nrf_802154_src_matching_method.
  *
@@ -1131,12 +1132,12 @@ bool nrf_802154_pending_bit_for_addr_clear(const uint8_t * p_addr, bool extended
 /**
  * @brief Removes all addresses of a given type from the pending bit list.
  *
- * Pending bit list works differently, depending on upper layer for which the source
+ * The pending bit list works differently, depending on the upper layer for which the source
  * address matching method is selected.
- * In case of Thread, pending bit is set only for the addresses found in the list.
- * In case of Zigbee, pending bit is cleared only for the short addresses found in the list.
- * In case of standard-compliant method, pending bit is always true, which requires
- * empty data frame with AR set to 0 to be transmitted immediately afterwards.
+ * 
+ * For Thread, @ref NRF_802154_SRC_ADDR_MATCH_THREAD
+ * For Zigbee, @ref NRF_802154_SRC_ADDR_MATCH_ZIGBEE
+ * For Standard-compliant, @ref NRF_802154_SRC_ADDR_MATCH_ALWAYS_1
  *
  * Used method can be set during initialization phase by calling @ref nrf_802154_src_matching_method.
  *

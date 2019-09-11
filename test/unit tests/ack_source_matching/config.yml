@@ -1,3 +1,0 @@
----
-:cmock:
-  :fail_on_unexpected_calls: true

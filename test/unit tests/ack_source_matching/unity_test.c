@@ -206,8 +206,8 @@ void test_ThreadExtAddressNotOnList()
     TEST_ASSERT_FALSE(res);
 }
 
-// ZigBee - if module disabled - return true.
-void test_ZigBeePendingDisabled()
+// Zigbee - if module disabled - return true.
+void test_ZigbeePendingDisabled()
 {
     bool res;
     nrf_802154_ack_data_src_addr_matching_method_set(NRF_802154_SRC_ADDR_MATCH_ZIGBEE);
@@ -217,8 +217,8 @@ void test_ZigBeePendingDisabled()
     TEST_ASSERT_TRUE(res);
 }
 
-// ZigBee - if mhr parsing returns false, return true.
-void test_ZigBeeParseFailed()
+// Zigbee - if mhr parsing returns false, return true.
+void test_ZigbeeParseFailed()
 {
     bool res;
     nrf_802154_ack_data_src_addr_matching_method_set(NRF_802154_SRC_ADDR_MATCH_ZIGBEE);
@@ -231,8 +231,8 @@ void test_ZigBeeParseFailed()
     TEST_ASSERT_TRUE(res);
 }
 
-// ZigBee - if frame is not MAC command frame, return false.
-void test_ZigBeeTypeNotCommand()
+// Zigbee - if frame is not MAC command frame, return false.
+void test_ZigbeeTypeNotCommand()
 {
     bool res;
     nrf_802154_ack_data_src_addr_matching_method_set(NRF_802154_SRC_ADDR_MATCH_ZIGBEE);
@@ -246,9 +246,9 @@ void test_ZigBeeTypeNotCommand()
     TEST_ASSERT_FALSE(res);
 }
 
-// ZigBee - if command is not data request, return false.
+// Zigbee - if command is not data request, return false.
 // Checked for both short and extended, as offsets differ.
-void test_ZigBeeCommandNotRequest()
+void test_ZigbeeCommandNotRequest()
 {
     bool res;
     nrf_802154_ack_data_src_addr_matching_method_set(NRF_802154_SRC_ADDR_MATCH_ZIGBEE);
@@ -274,8 +274,8 @@ void test_ZigBeeCommandNotRequest()
     TEST_ASSERT_FALSE(res);
 }
 
-// ZigBee - if frame is on the list, return false if address is short address, true otherwise.
-void test_ZigBeeAddressOnList()
+// Zigbee - if frame is on the list, return false if address is short address, true otherwise.
+void test_ZigbeeAddressOnList()
 {
     bool res;
     nrf_802154_ack_data_src_addr_matching_method_set(NRF_802154_SRC_ADDR_MATCH_ZIGBEE);
@@ -305,9 +305,9 @@ void test_ZigBeeAddressOnList()
     TEST_ASSERT_TRUE(res);
 }
 
-// ZigBee - if frame is not on the list, return true.
+// Zigbee - if frame is not on the list, return true.
 // Checked for both short and extended address, as decision path differs.
-void test_ZigBeeAddressNotOnList()
+void test_ZigbeeAddressNotOnList()
 {
     bool res;
     nrf_802154_ack_data_src_addr_matching_method_set(NRF_802154_SRC_ADDR_MATCH_ZIGBEE);
