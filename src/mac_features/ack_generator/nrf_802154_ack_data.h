@@ -106,8 +106,8 @@ void nrf_802154_ack_data_reset(bool extended, uint8_t data_type);
  *
  * @note This function is to be called after the driver initialization, but before the transceiver is enabled.
  *
- * When calling @ref nrf_802154_ack_data_pending_bit_should_be_set, one of several algorithms 
- * for source address matching will be chosen. To ensure a specific algorithm is selected, 
+ * When calling @ref nrf_802154_ack_data_pending_bit_should_be_set, one of several algorithms
+ * for source address matching will be chosen. To ensure a specific algorithm is selected,
  * call this function before @ref rf_802154_ack_data_pending_bit_should_be_set.
  *
  * @param[in]  match_method Source matching method to be used.
