@@ -140,7 +140,7 @@ typedef uint8_t nrf_802154_ack_data_t;
 
 /**
  * @brief Methods of source address matching.
- * 
+ *
  * You can use one of the following methods that can be set during the initialization phase
  * by calling @ref nrf_802154_src_matching_method:
  *   - For Thread: @ref NRF_802154_SRC_ADDR_MATCH_THREAD -- The pending bit is set only for the addresses found in the list.
