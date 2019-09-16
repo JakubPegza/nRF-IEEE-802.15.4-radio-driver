@@ -49,6 +49,7 @@
 #include "nrf_fem_control_config.h"
 #include "nrf_fem_protocol_legacy_api.h"
 
+#include "nrf_error.h"
 #include "nrf_ppi.h"
 #include "nrf_timer.h"
 
@@ -287,6 +288,10 @@ static inline void nrf_802154_fal_pa_is_configured(int8_t * const p_gain)
 {
     *p_gain = 0;
 }
+
+#define NRF_802154_FEM_PINS_USED_MASK            0
+#define NRF_802154_FEM_PPI_CHANNELS_USED_MASK    0
+#define NRF_802154_FEM_GPIOTE_CHANNELS_USED_MASK 0
 
 #endif // ENABLE_FEM
 
