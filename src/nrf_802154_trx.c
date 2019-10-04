@@ -1621,6 +1621,17 @@ void nrf_802154_trx_modulated_carrier(const void * p_transmit_buffer)
     trigger_disable_to_start_rampup();
 }
 
+void nrf_802154_trx_modulated_carrier_restart(void)
+{
+    assert(m_trx_state == TRX_STATE_MODULATED_CARRIER);
+
+    // Modulated carrier PPIs are configured without self-disabling
+    // Triggering RADIO.TASK_DISABLE causes ramp-down -> RADIO.EVENTS_DISABLED -> EGU.TASK -> EGU.EVENT ->
+    // RADIO.TASK_TXEN -> ramp_up -> new modulated carrier
+
+    nrf_radio_task_trigger(NRF_RADIO_TASK_DISABLE);
+}
+
 static void modulated_carrier_abort()
 {
     nrf_ppi_channel_disable(PPI_DISABLED_EGU);

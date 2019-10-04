@@ -350,6 +350,7 @@ void nrf_802154_trx_continuous_carrier(void);
 void nrf_802154_trx_continuous_carrier_restart(void);
 
 void nrf_802154_trx_modulated_carrier(const void * p_transmit_buffer);
+void nrf_802154_trx_modulated_carrier_restart(void);
 
 /**@brief Puts trx module into energy detection mode.
  *
