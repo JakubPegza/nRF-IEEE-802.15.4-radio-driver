@@ -67,6 +67,7 @@ typedef enum
     TRX_STATE_TXACK,
     TRX_STATE_STANDALONE_CCA,
     TRX_STATE_CONTINUOUS_CARRIER,
+    TRX_STATE_MODULATED_CARRIER,
     TRX_STATE_ENERGY_DETECTION,
 
     /* PPIS disabled deconfigured
@@ -213,6 +214,8 @@ void nrf_802154_trx_standalone_cca(void);
 void nrf_802154_trx_continuous_carrier(void);
 void nrf_802154_trx_continuous_carrier_restart(void);
 
+void nrf_802154_trx_modulated_carrier(const void * p_transmit_buffer);
+
 /**@brief Puts trx module into energy detection mode.
  *
  * Operation ends up with a call to ref nrf_802154_trx_energy_detection_finished
@@ -234,6 +237,7 @@ void nrf_802154_trx_transmit_frame_abort(void);
 void nrf_802154_trx_transmit_ack_abort(void);
 void nrf_802154_trx_standalone_cca_abort(void);
 void nrf_802154_trx_continuous_carrier_abort(void);
+void nrf_802154_trx_modulated_carrier_abort(void);
 void nrf_802154_trx_energy_detection_abort(void);
 
 /**@brief   Handler called from isr at the beginning of a frame reception (just after synchronization header is received).

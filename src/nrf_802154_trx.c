@@ -1269,6 +1269,10 @@ void nrf_802154_trx_abort(void)
             nrf_802154_trx_continuous_carrier_abort();
             break;
 
+        case TRX_STATE_MODULATED_CARRIER:
+            nrf_802154_trx_modulated_carrier_abort();
+            break;
+
         case TRX_STATE_ENERGY_DETECTION:
             nrf_802154_trx_energy_detection_abort();
             break;
@@ -1490,6 +1494,18 @@ void nrf_802154_trx_continuous_carrier_abort(void)
     nrf_radio_task_trigger(NRF_RADIO_TASK_DISABLE);
 
     m_trx_state = TRX_STATE_FINISHED;
+}
+
+// TODO: provide implementation
+void nrf_802154_trx_modulated_carrier(const void * p_transmit_buffer)
+{
+    (void)(*p_transmit_buffer);
+}
+
+// TODO: provide implementation
+void nrf_802154_trx_modulated_carrier_abort()
+{
+    
 }
 
 void nrf_802154_trx_energy_detection(uint32_t ed_count)
