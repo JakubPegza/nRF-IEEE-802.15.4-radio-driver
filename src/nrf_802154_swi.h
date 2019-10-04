@@ -225,6 +225,16 @@ void nrf_802154_swi_cca(nrf_802154_term_t term_lvl, bool * p_result);
 void nrf_802154_swi_continuous_carrier(nrf_802154_term_t term_lvl, bool * p_result);
 
 /**
+ * @brief Requests entering the @ref RADIO_STATE_MODULATED_CARRIER state from the SWI priority.
+ *
+ * @param[in]   term_lvl  Termination level of this request. Selects procedures to abort.
+ * @param[out]  p_result  Result of entering the continuous carrier state.
+ */
+void nrf_802154_swi_modulated_carrier(nrf_802154_term_t   term_lvl, 
+                                      const uint8_t     * p_data,
+                                      bool              * p_result);
+
+/**
  * @brief Notifies the core module that the given buffer is not used anymore and can be freed.
  *
  * @param[in]  p_data  Pointer to the buffer to be freed.
