@@ -155,6 +155,7 @@ typedef enum
     TRX_STATE_TXACK,
     TRX_STATE_STANDALONE_CCA,
     TRX_STATE_CONTINUOUS_CARRIER,
+    TRX_STATE_MODULATED_CARRIER,
     TRX_STATE_ENERGY_DETECTION,
 
     /* PPIS disabled deconfigured
@@ -242,6 +243,7 @@ static void transmit_frame_abort(void);
 static void transmit_ack_abort(void);
 static void standalone_cca_abort(void);
 static void continuous_carrier_abort(void);
+static void modulated_carrier_abort(void);
 static void energy_detection_abort(void);
 
 /** Clear flags describing frame being received. */
@@ -1361,6 +1363,10 @@ void nrf_802154_trx_abort(void)
             continuous_carrier_abort();
             break;
 
+        case TRX_STATE_MODULATED_CARRIER:
+            modulated_carrier_abort();
+            break;
+
         case TRX_STATE_ENERGY_DETECTION:
             energy_detection_abort();
             break;
@@ -1582,6 +1588,18 @@ static void continuous_carrier_abort(void)
     nrf_radio_task_trigger(NRF_RADIO_TASK_DISABLE);
 
     m_trx_state = TRX_STATE_FINISHED;
+}
+
+// TODO: provide implementation
+void nrf_802154_trx_modulated_carrier(const void * p_transmit_buffer)
+{
+    (void)(*p_transmit_buffer);
+}
+
+// TODO: provide implementation
+static void modulated_carrier_abort()
+{
+    
 }
 
 void nrf_802154_trx_energy_detection(uint32_t ed_count)
