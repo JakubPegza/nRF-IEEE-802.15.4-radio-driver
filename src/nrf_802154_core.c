@@ -866,7 +866,7 @@ static void continuous_carrier_init(bool disabled_was_triggered)
 }
 
 /** Initialize Modulated Carrier operation. */
-static void modulated_carrier_init(bool            disabled_was_triggered, 
+static void modulated_carrier_init(bool            disabled_was_triggered,
                                    const uint8_t * p_data)
 {
     if (!timeslot_is_granted())
@@ -1888,15 +1888,15 @@ bool nrf_802154_core_continuous_carrier(nrf_802154_term_t term_lvl)
     return result;
 }
 
-bool nrf_802154_core_modulated_carrier(nrf_802154_term_t   term_lvl,
-                                       const uint8_t     * p_data)
+bool nrf_802154_core_modulated_carrier(nrf_802154_term_t term_lvl,
+                                       const uint8_t   * p_data)
 {
     bool result = critical_section_enter_and_verify_timeslot_length();
 
     if (result)
     {
         result = current_operation_terminate(term_lvl, REQ_ORIG_CORE, true);
-        
+
         if (result)
         {
             state_set(RADIO_STATE_MODULATED_CARRIER);

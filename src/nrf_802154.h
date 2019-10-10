@@ -530,7 +530,7 @@ bool nrf_802154_continuous_carrier(void);
  * @note When the radio is emitting modulated carrier signals, it blocks all transmissions on the
  *       selected channel. This function is to be called only during radio tests. Do not
  *       use it during normal device operation.
- * 
+ *
  * @param[in] p_data Pointer to a buffer to modulate the carrier with.
  *
  * @retval  true   The modulated carrier procedure was scheduled.
