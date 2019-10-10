@@ -141,8 +141,8 @@ bool nrf_802154_request_continuous_carrier(nrf_802154_term_t term_lvl);
  * @retval  true   The driver will enter the modulated carrier state.
  * @retval  false  The driver cannot enter the modulated carrier state due to an ongoing operation.
  */
-bool nrf_802154_request_modulated_carrier(nrf_802154_term_t   term_lvl,
-                                          const uint8_t     * p_data);
+bool nrf_802154_request_modulated_carrier(nrf_802154_term_t term_lvl,
+                                          const uint8_t   * p_data);
 
 /**
  * @brief Requests the driver to free the given buffer.

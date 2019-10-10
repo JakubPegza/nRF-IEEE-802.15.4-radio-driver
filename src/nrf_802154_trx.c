@@ -112,10 +112,10 @@
 #define SHORTS_RX_ACK         (NRF_RADIO_SHORT_ADDRESS_RSSISTART_MASK | \
                                NRF_RADIO_SHORT_END_DISABLE_MASK)
 
-#define SHORTS_MOD_CARRIER      (NRF_RADIO_SHORT_READY_START_MASK | \
-                                 NRF_RADIO_SHORT_PHYEND_START_MASK)                                 
+#define SHORTS_MOD_CARRIER    (NRF_RADIO_SHORT_TXREADY_START_MASK | \
+                               NRF_RADIO_SHORT_PHYEND_START_MASK)
 
-#define SHORTS_ED               (NRF_RADIO_SHORT_READY_EDSTART_MASK)
+#define SHORTS_ED             (NRF_RADIO_SHORT_READY_EDSTART_MASK)
 
 #define SHORTS_CCA            (NRF_RADIO_SHORT_RXREADY_CCASTART_MASK | \
                                NRF_RADIO_SHORT_CCABUSY_DISABLE_MASK)

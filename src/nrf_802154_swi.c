@@ -220,10 +220,10 @@ typedef struct
 
         struct
         {
-            nrf_802154_term_t   term_lvl; ///< Request priority.
-            const uint8_t     * p_data;   ///< Pointer to a buffer to modulate the carrier with.
-            bool              * p_result; ///< Modulated carrier request result.
-        } modulated_carrier;              ///< Modulated carrier request details.
+            nrf_802154_term_t term_lvl; ///< Request priority.
+            const uint8_t   * p_data;   ///< Pointer to a buffer to modulate the carrier with.
+            bool            * p_result; ///< Modulated carrier request result.
+        } modulated_carrier;            ///< Modulated carrier request details.
 
         struct
         {
@@ -654,13 +654,13 @@ void nrf_802154_swi_continuous_carrier(nrf_802154_term_t term_lvl, bool * p_resu
     req_exit();
 }
 
-void nrf_802154_swi_modulated_carrier(nrf_802154_term_t   term_lvl, 
-                                      const uint8_t     * p_data,
-                                      bool              * p_result)
+void nrf_802154_swi_modulated_carrier(nrf_802154_term_t term_lvl,
+                                      const uint8_t   * p_data,
+                                      bool            * p_result)
 {
     nrf_802154_req_data_t * p_slot = req_enter();
 
-    p_slot->type                             = REQ_TYPE_MODULATED_CARRIER;
+    p_slot->type                            = REQ_TYPE_MODULATED_CARRIER;
     p_slot->data.modulated_carrier.term_lvl = term_lvl;
     p_slot->data.modulated_carrier.p_data   = p_data;
     p_slot->data.modulated_carrier.p_result = p_result;
