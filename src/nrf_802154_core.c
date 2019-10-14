@@ -469,6 +469,7 @@ static rsch_prio_t min_required_rsch_prio(radio_state_t state)
         case RADIO_STATE_TX_ACK:
         case RADIO_STATE_CCA_TX:
         case RADIO_STATE_CONTINUOUS_CARRIER:
+        case RADIO_STATE_MODULATED_CARRIER:
             return RSCH_PRIO_TX;
 
         default:
@@ -559,6 +560,7 @@ static bool can_terminate_current_operation(radio_state_t     state,
         case RADIO_STATE_SLEEP:
         case RADIO_STATE_FALLING_ASLEEP:
         case RADIO_STATE_CONTINUOUS_CARRIER:
+        case RADIO_STATE_MODULATED_CARRIER:
             result = true;
             break;
 
@@ -589,6 +591,7 @@ static void operation_terminated_notify(radio_state_t state, bool receiving_psdu
         case RADIO_STATE_SLEEP:
         case RADIO_STATE_FALLING_ASLEEP:
         case RADIO_STATE_CONTINUOUS_CARRIER:
+        case RADIO_STATE_MODULATED_CARRIER:
             break;
 
         case RADIO_STATE_RX:
@@ -816,6 +819,18 @@ static void continuous_carrier_init(bool disabled_was_triggered)
     nrf_802154_trx_continuous_carrier();
 }
 
+/** Initialize Modulated Carrier operation. */
+static void modulated_carrier_init(bool            disabled_was_triggered,
+                                   const uint8_t * p_data)
+{
+    if (!timeslot_is_granted())
+    {
+        return;
+    }
+
+    nrf_802154_trx_modulated_carrier((const void *)p_data);
+}
+
 /***************************************************************************************************
  * @section Radio Scheduler notification handlers
  **************************************************************************************************/
@@ -874,6 +889,7 @@ static void on_timeslot_ended(void)
             case RADIO_STATE_ED:
             case RADIO_STATE_CCA:
             case RADIO_STATE_CONTINUOUS_CARRIER:
+            case RADIO_STATE_MODULATED_CARRIER:
             case RADIO_STATE_SLEEP:
                 // Intentionally empty.
                 break;
@@ -934,6 +950,7 @@ static void on_preconditions_denied(radio_state_t state)
         case RADIO_STATE_ED:
         case RADIO_STATE_CCA:
         case RADIO_STATE_CONTINUOUS_CARRIER:
+        case RADIO_STATE_MODULATED_CARRIER:
         case RADIO_STATE_SLEEP:
             // Intentionally empty.
             break;
@@ -977,6 +994,10 @@ static void on_preconditions_approved(radio_state_t state)
 
         case RADIO_STATE_CONTINUOUS_CARRIER:
             continuous_carrier_init(false);
+            break;
+
+        case RADIO_STATE_MODULATED_CARRIER:
+            modulated_carrier_init(false, mp_tx_data);
             break;
 
         default:
@@ -1793,6 +1814,28 @@ bool nrf_802154_core_continuous_carrier(nrf_802154_term_t term_lvl)
     return result;
 }
 
+bool nrf_802154_core_modulated_carrier(nrf_802154_term_t term_lvl,
+                                       const uint8_t   * p_data)
+{
+    bool result = critical_section_enter_and_verify_timeslot_length();
+
+    if (result)
+    {
+        result = current_operation_terminate(term_lvl, REQ_ORIG_CORE, true);
+
+        if (result)
+        {
+            state_set(RADIO_STATE_MODULATED_CARRIER);
+            mp_tx_data = p_data;
+            modulated_carrier_init(true, p_data);
+        }
+
+        nrf_802154_critical_section_exit();
+    }
+
+    return result;
+}
+
 bool nrf_802154_core_notify_buffer_free(uint8_t * p_data)
 {
     rx_buffer_t * p_buffer     = (rx_buffer_t *)p_data;
@@ -1835,7 +1878,6 @@ bool nrf_802154_core_channel_update(void)
                 {
                     rx_init(true);
                 }
-
                 break;
 
             case RADIO_STATE_CONTINUOUS_CARRIER:
@@ -1843,7 +1885,13 @@ bool nrf_802154_core_channel_update(void)
                 {
                     nrf_802154_trx_continuous_carrier_restart();
                 }
+                break;
 
+            case RADIO_STATE_MODULATED_CARRIER:
+            if (timeslot_is_granted())
+                {
+                    nrf_802154_trx_modulated_carrier_restart();
+                }
                 break;
 
             default:

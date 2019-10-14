@@ -112,6 +112,9 @@
 #define SHORTS_RX_ACK         (NRF_RADIO_SHORT_ADDRESS_RSSISTART_MASK | \
                                NRF_RADIO_SHORT_END_DISABLE_MASK)
 
+#define SHORTS_MOD_CARRIER    (NRF_RADIO_SHORT_TXREADY_START_MASK | \
+                               NRF_RADIO_SHORT_PHYEND_START_MASK)
+
 #define SHORTS_ED             (NRF_RADIO_SHORT_READY_EDSTART_MASK)
 
 #define SHORTS_CCA            (NRF_RADIO_SHORT_RXREADY_CCASTART_MASK | \
@@ -1269,6 +1272,10 @@ void nrf_802154_trx_abort(void)
             nrf_802154_trx_continuous_carrier_abort();
             break;
 
+        case TRX_STATE_MODULATED_CARRIER:
+            nrf_802154_trx_modulated_carrier_abort();
+            break;
+
         case TRX_STATE_ENERGY_DETECTION:
             nrf_802154_trx_energy_detection_abort();
             break;
@@ -1484,6 +1491,59 @@ void nrf_802154_trx_continuous_carrier_abort(void)
 {
     nrf_ppi_channel_disable(PPI_DISABLED_EGU);
     nrf_ppi_channel_disable(PPI_EGU_RAMP_UP);
+
+    fem_for_pa_reset();
+
+    nrf_radio_task_trigger(NRF_RADIO_TASK_DISABLE);
+
+    m_trx_state = TRX_STATE_FINISHED;
+}
+
+void nrf_802154_trx_modulated_carrier(const void * p_transmit_buffer)
+{
+    assert((m_trx_state == TRX_STATE_IDLE) || (m_trx_state == TRX_STATE_FINISHED));
+    assert(p_transmit_buffer != NULL);
+
+    m_trx_state = TRX_STATE_MODULATED_CARRIER;
+
+    // Set Tx Power
+    nrf_radio_txpower_set(nrf_802154_pib_tx_power_get());
+
+    // Set Tx buffer
+    nrf_radio_packetptr_set(p_transmit_buffer);
+
+    // Set shorts
+    nrf_radio_shorts_set(SHORTS_MOD_CARRIER);
+
+    // Set FEM
+    fem_for_pa_set();
+
+    // Clr event EGU
+    nrf_egu_event_clear(NRF_802154_SWI_EGU_INSTANCE, EGU_EVENT);
+
+    // Set PPIs
+    ppis_for_egu_and_ramp_up_set(NRF_RADIO_TASK_TXEN, false);
+
+    trigger_disable_to_start_rampup();
+}
+
+void nrf_802154_trx_modulated_carrier_restart(void)
+{
+    assert(m_trx_state == TRX_STATE_MODULATED_CARRIER);
+
+    // Modulated carrier PPIs are configured without self-disabling
+    // Triggering RADIO.TASK_DISABLE causes ramp-down -> RADIO.EVENTS_DISABLED -> EGU.TASK -> EGU.EVENT ->
+    // RADIO.TASK_TXEN -> ramp_up -> new modulated carrier
+
+    nrf_radio_task_trigger(NRF_RADIO_TASK_DISABLE);
+}
+
+void nrf_802154_trx_modulated_carrier_abort()
+{
+    nrf_ppi_channel_disable(PPI_DISABLED_EGU);
+    nrf_ppi_channel_disable(PPI_EGU_RAMP_UP);
+
+    nrf_radio_shorts_set(SHORTS_IDLE);
 
     fem_for_pa_reset();
 
