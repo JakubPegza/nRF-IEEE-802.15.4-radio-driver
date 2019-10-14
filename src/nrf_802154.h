@@ -1258,6 +1258,23 @@ bool nrf_802154_coex_rx_request_mode_set(nrf_802154_coex_rx_request_mode_t mode)
  */
 nrf_802154_coex_rx_request_mode_t nrf_802154_coex_rx_request_mode_get(void);
 
+/**
+ * @brief Sets Coex request mode used in transmit operations.
+ *
+ * @param[in] mode  Coex transmit request mode. For possible values see @ref nrf_802154_coex_tx_request_mode_t type.
+ *
+ * @retval true     Operation succeed.
+ * @retval false    Requested mode is not supported.
+ */
+bool nrf_802154_coex_tx_request_mode_set(nrf_802154_coex_tx_request_mode_t mode);
+
+/**
+ * @brief Gets Coex request mode used in transmit operations.
+ *
+ * @return Current Coex transmit request mode. For possible values see @ref nrf_802154_coex_tx_request_mode_t type.
+ */
+nrf_802154_coex_tx_request_mode_t nrf_802154_coex_tx_request_mode_get(void);
+
 /** @} */
 
 #ifdef __cplusplus

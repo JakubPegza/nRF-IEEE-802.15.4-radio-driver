@@ -49,6 +49,7 @@
 typedef struct
 {
     nrf_802154_coex_rx_request_mode_t rx_request_mode; ///< Coex request mode in receive operation.
+    nrf_802154_coex_tx_request_mode_t tx_request_mode; ///< Coex request mode in transmit operation.
 } nrf_802154_pib_coex_t;
 
 typedef struct
@@ -144,6 +145,7 @@ void nrf_802154_pib_init(void)
     m_data.cca.corr_limit     = NRF_802154_CCA_CORR_LIMIT_DEFAULT;
 
     m_data.coex.rx_request_mode = NRF_802154_COEX_RX_REQUEST_MODE_DESTINED;
+    m_data.coex.tx_request_mode = NRF_8025154_COEX_TX_REQUEST_FRAME_READY;
 }
 
 bool nrf_802154_pib_promiscuous_get(void)
@@ -293,4 +295,41 @@ bool nrf_802154_pib_coex_rx_request_mode_set(nrf_802154_coex_rx_request_mode_t m
 nrf_802154_coex_rx_request_mode_t nrf_802154_pib_rx_coex_request_mode_get(void)
 {
     return m_data.coex.rx_request_mode;
+}
+
+bool nrf_802154_pib_coex_tx_request_mode_is_supported(nrf_802154_coex_tx_request_mode_t mode)
+{
+    bool result = false;
+
+    switch (mode)
+    {
+        case NRF_8025154_COEX_TX_REQUEST_DISABLED:
+        case NRF_8025154_COEX_TX_REQUEST_FRAME_READY:
+        case NRF_8025154_COEX_TX_REQUEST_CCA_START:
+        case NRF_8025154_COEX_TX_REQUEST_CCA_DONE:
+            result = true;
+            break;
+
+        default:
+            break;
+    }
+
+    return result;
+}
+
+bool nrf_802154_pib_coex_tx_request_mode_set(nrf_802154_coex_tx_request_mode_t mode)
+{
+    bool result = nrf_802154_pib_coex_tx_request_mode_is_supported(mode);
+
+    if (result)
+    {
+        m_data.coex.tx_request_mode = mode;
+    }
+
+    return result;
+}
+
+nrf_802154_coex_tx_request_mode_t nrf_802154_pib_tx_coex_request_mode_get(void)
+{
+    return m_data.coex.tx_request_mode;
 }
