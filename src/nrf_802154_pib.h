@@ -214,16 +214,6 @@ bool nrf_802154_pib_coex_rx_request_mode_set(nrf_802154_coex_rx_request_mode_t m
 nrf_802154_coex_rx_request_mode_t nrf_802154_pib_coex_rx_request_mode_get(void);
 
 /**
- * @brief Checks if provided coex transmit request mode is supported
- *
- * @param[in] mode  Value to check
- *
- * @retval true     When value provided by @p mode param is supported.
- * @retval false    Otherwise.
- */
-bool nrf_802154_pib_coex_tx_request_mode_is_supported(nrf_802154_coex_tx_request_mode_t mode);
-
-/**
  * @brief Sets Coex request mode used in transmit operations.
  *
  * @param[in] mode  Coex transmit request mode.

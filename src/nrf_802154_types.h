@@ -188,10 +188,10 @@ typedef uint8_t nrf_802154_coex_rx_request_mode_t;
  */
 typedef uint8_t nrf_802154_coex_tx_request_mode_t;
 
-#define NRF_8025154_COEX_TX_REQUEST_DISABLED    0x01 // !< Coex does not request to arbiter in transmit mode.
-#define NRF_8025154_COEX_TX_REQUEST_FRAME_READY 0x02 // !< Coex requests to arbiter in transmit mode when the frame is ready to be transmitted.
-#define NRF_8025154_COEX_TX_REQUEST_CCA_START   0x03 // !< Coex requests to arbiter in transmit mode before CCA is started.
-#define NRF_8025154_COEX_TX_REQUEST_CCA_DONE    0x04 // !< Coex requests to arbiter in transmit mode after CCA is finished.
+#define NRF_8025154_COEX_TX_REQUEST_DISABLED    0x00 // !< Coex does not request to arbiter in transmit mode.
+#define NRF_8025154_COEX_TX_REQUEST_FRAME_READY 0x01 // !< Coex requests to arbiter in transmit mode when the frame is ready to be transmitted.
+#define NRF_8025154_COEX_TX_REQUEST_CCA_START   0x02 // !< Coex requests to arbiter in transmit mode before CCA is started.
+#define NRF_8025154_COEX_TX_REQUEST_CCA_DONE    0x03 // !< Coex requests to arbiter in transmit mode after CCA is finished.
 
 /**
  *@}

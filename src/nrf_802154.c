@@ -176,7 +176,7 @@ bool nrf_802154_coex_tx_request_mode_set(nrf_802154_coex_tx_request_mode_t mode)
     return nrf_802154_pib_coex_tx_request_mode_set(mode);
 }
 
-nrf_802154_coex_rx_request_mode_t nrf_802154_coex_tx_request_mode_get(void)
+nrf_802154_coex_tx_request_mode_t nrf_802154_coex_tx_request_mode_get(void)
 {
     return nrf_802154_pib_coex_tx_request_mode_get();
 }

@@ -297,7 +297,15 @@ nrf_802154_coex_rx_request_mode_t nrf_802154_pib_rx_coex_request_mode_get(void)
     return m_data.coex.rx_request_mode;
 }
 
-bool nrf_802154_pib_coex_tx_request_mode_is_supported(nrf_802154_coex_tx_request_mode_t mode)
+/**
+ * @brief Checks if provided coex transmit request mode is supported
+ *
+ * @param[in] mode  Value to check
+ *
+ * @retval true     When value provided by @p mode param is supported.
+ * @retval false    Otherwise.
+ */
+static bool nrf_802154_pib_coex_tx_request_mode_is_supported(nrf_802154_coex_tx_request_mode_t mode)
 {
     bool result = false;
 
