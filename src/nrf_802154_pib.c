@@ -145,7 +145,7 @@ void nrf_802154_pib_init(void)
     m_data.cca.corr_limit     = NRF_802154_CCA_CORR_LIMIT_DEFAULT;
 
     m_data.coex.rx_request_mode = NRF_802154_COEX_RX_REQUEST_MODE_DESTINED;
-    m_data.coex.tx_request_mode = NRF_8025154_COEX_TX_REQUEST_FRAME_READY;
+    m_data.coex.tx_request_mode = NRF_802154_COEX_TX_REQUEST_FRAME_READY;
 }
 
 bool nrf_802154_pib_promiscuous_get(void)
@@ -311,10 +311,10 @@ static bool nrf_802154_pib_coex_tx_request_mode_is_supported(nrf_802154_coex_tx_
 
     switch (mode)
     {
-        case NRF_8025154_COEX_TX_REQUEST_DISABLED:
-        case NRF_8025154_COEX_TX_REQUEST_FRAME_READY:
-        case NRF_8025154_COEX_TX_REQUEST_CCA_START:
-        case NRF_8025154_COEX_TX_REQUEST_CCA_DONE:
+        case NRF_802154_COEX_TX_REQUEST_DISABLED:
+        case NRF_802154_COEX_TX_REQUEST_FRAME_READY:
+        case NRF_802154_COEX_TX_REQUEST_CCA_START:
+        case NRF_802154_COEX_TX_REQUEST_CCA_DONE:
             result = true;
             break;
 
