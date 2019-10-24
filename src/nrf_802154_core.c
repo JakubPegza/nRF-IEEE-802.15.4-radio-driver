@@ -1962,7 +1962,7 @@ bool nrf_802154_core_channel_update(void)
                 break;
 
             case RADIO_STATE_MODULATED_CARRIER:
-            if (timeslot_is_granted())
+                if (timeslot_is_granted())
                 {
                     nrf_802154_trx_modulated_carrier_restart();
                 }
