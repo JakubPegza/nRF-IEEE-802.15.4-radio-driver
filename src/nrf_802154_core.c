@@ -874,6 +874,11 @@ static void modulated_carrier_init(bool            disabled_was_triggered,
         return;
     }
 
+    if (!are_preconditions_met())
+    {
+        return;
+    }
+
     nrf_802154_trx_modulated_carrier((const void *)p_data);
 }
 
