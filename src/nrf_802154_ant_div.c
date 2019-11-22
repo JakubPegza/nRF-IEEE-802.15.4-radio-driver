@@ -1,4 +1,4 @@
-/* Copyright (c) 2017 - 2019, Nordic Semiconductor ASA
+/* Copyright (c) 2019, Nordic Semiconductor ASA
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,76 +36,55 @@
 #include <assert.h>
 
 #include "nrf_802154_ant_div.h"
-#include "nrf_error.h"
 #include "nrf_gpio.h"
 
 #ifdef ENABLE_ANT_DIV
 
-static nrf_802154_ant_div_config_t m_ant_div_config =      /**< Antenna Diversity configuration */
+static nrf_802154_ant_div_config_t m_ant_div_config = /**< Antenna Diversity configuration */
 {
-    .ant_sel_pin = NRF_ANT_DIV_ANT_SEL_DEFAULT_PIN
+    .ant_sel_pin = NRF_802154_ANT_DIV_ANT_SEL_DEFAULT_PIN
 };
 
-int32_t nrf_802154_ant_div_init()
+uint32_t nrf_802154_ant_div_init(void)
 {
     nrf_gpio_cfg_output(m_ant_div_config.ant_sel_pin);
     return NRF_SUCCESS;
 }
 
-int32_t nrf_802154_ant_div_set_config(nrf_802154_ant_div_config_t *p_ant_div_config)
+uint32_t nrf_802154_ant_div_config_set(const nrf_802154_ant_div_config_t * p_ant_div_config)
 {
     assert(p_ant_div_config != NULL);
     m_ant_div_config = *p_ant_div_config;
     return NRF_SUCCESS;
 }
 
-int32_t nrf_802154_ant_div_get_config(nrf_802154_ant_div_config_t *p_ant_div_config)
+uint32_t nrf_802154_ant_div_config_get(nrf_802154_ant_div_config_t * p_ant_div_config)
 {
     assert(p_ant_div_config != NULL);
     *p_ant_div_config = m_ant_div_config;
     return NRF_SUCCESS;
 }
 
-int32_t nrf_802154_ant_div_set_antenna(nrf_802154_ant_div_antenna_t antenna)
+uint32_t nrf_802154_ant_div_antenna_set(nrf_802154_ant_div_antenna_t antenna)
 {
-    nrf_gpio_pin_write(m_ant_div_config.ant_sel_pin, antenna);
+    uint32_t status = NRF_SUCCESS;
+
+    if (NRF_ANT_DIV_ANTENNA_1 == antenna || NRF_ANT_DIV_ANTENNA_2 == antenna )
+    {
+        nrf_gpio_pin_write(m_ant_div_config.ant_sel_pin, antenna);
+    }
+    else
+    {
+        status = NRF_ERROR_INVALID_PARAM;
+    }
+
+    return status;
+}
+
+uint32_t nrf_802154_ant_div_antenna_get(nrf_802154_ant_div_antenna_t * p_antenna)
+{
+    *p_antenna = nrf_gpio_pin_out_read(m_ant_div_config.ant_sel_pin);
     return NRF_SUCCESS;
 }
 
-int32_t nrf_802154_ant_div_get_antenna(nrf_802154_ant_div_antenna_t *antenna)
-{
-    *antenna = (NRF_GPIO->OUT >> m_ant_div_config.ant_sel_pin) & 0x01;
-    return NRF_SUCCESS;
-}
-#else //ENABLE_ANT_DIV
-
-int32_t nrf_802154_ant_div_init()
-{
-    return NRF_ERROR_NOT_SUPPORTED;
-}
-
-int32_t nrf_802154_ant_div_set_config(nrf_802154_ant_div_config_t *p_ant_div_config)
-{
-    (void)p_ant_div_config;
-    return NRF_ERROR_NOT_SUPPORTED;
-}
-
-int32_t nrf_802154_ant_div_get_config(nrf_802154_ant_div_config_t *p_ant_div_config)
-{
-    (void)p_ant_div_config;
-    return NRF_ERROR_NOT_SUPPORTED;
-}
-
-int32_t nrf_802154_ant_div_set_antenna(nrf_802154_ant_div_antenna_t antenna)
-{
-    (void)antenna;
-    return NRF_ERROR_NOT_SUPPORTED;
-}
-
-int32_t nrf_802154_ant_div_get_antenna(nrf_802154_ant_div_antenna_t *antenna)
-{
-    (void)antenna;
-    return NRF_ERROR_NOT_SUPPORTED;
-}
-
-#endif //ENABLE_ANT_DIV
+#endif // ENABLE_ANT_DIV
