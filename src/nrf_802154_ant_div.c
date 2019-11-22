@@ -69,7 +69,7 @@ uint32_t nrf_802154_ant_div_antenna_set(nrf_802154_ant_div_antenna_t antenna)
 {
     uint32_t status = NRF_SUCCESS;
 
-    if (NRF_ANT_DIV_ANTENNA_1 == antenna || NRF_ANT_DIV_ANTENNA_2 == antenna )
+    if ((NRF_ANT_DIV_ANTENNA_1 == antenna) || (NRF_ANT_DIV_ANTENNA_2 == antenna))
     {
         nrf_gpio_pin_write(m_ant_div_config.ant_sel_pin, antenna);
     }

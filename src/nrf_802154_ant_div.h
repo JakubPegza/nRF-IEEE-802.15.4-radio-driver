@@ -51,6 +51,9 @@ typedef struct
     uint8_t ant_sel_pin; /* Pin used for antenna selection */
 } nrf_802154_ant_div_config_t;
 
+/**
+ * @brief Available antennas
+ */
 typedef enum
 {
     NRF_ANT_DIV_ANTENNA_1 = 0,
