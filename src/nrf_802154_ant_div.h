@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 /* Copyright (c) 2019, Nordic Semiconductor ASA
-=======
-/* Copyright (c) 2017, Nordic Semiconductor ASA
->>>>>>> Implement antenna diversity module
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
