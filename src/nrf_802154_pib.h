@@ -363,20 +363,6 @@ bool nrf_802154_pib_ant_diversity_antenna_set(nrf_802154_ant_diversity_antenna_t
  */
 nrf_802154_ant_diversity_antenna_t nrf_802154_pib_ant_diversity_antenna_get();
 
-/**
- * @brief Sets the antenna toggle time in automatic mode.
- *
- * @param[in] toggle_time  Time between switching antennas in us.
- */
-void nrf_802154_pib_ant_diversity_toggle_time_set(uint8_t toggle_time);
-
-/**
- * @brief Reads the current antenna toggle time in automatic mode.
- *
- * @return Current time between switching antennas in us.
- */
-uint32_t nrf_802154_pib_ant_diversity_toggle_time_get();
-
 #endif // ENABLE_ANT_DIVERSITY
 
 #ifdef __cplusplus

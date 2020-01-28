@@ -33,17 +33,20 @@
  *   This file implements the 802.15.4 antenna diversity module.
  *
  */
-#define NRF_802154_MODULE_ID NRF_802154_MODULE_ID_AD
+#define NRF_802154_MODULE_ID NRF_802154_MODULE_ID_ANT_DIVERSITY
+
+#include "nrf_802154_ant_diversity.h"
 
 #include <assert.h>
 
-#include "nrf_802154_ant_diversity.h"
+#include "nrf_802154_config.h"
+#include "nrf_802154_const.h"
 #include "nrf_802154_debug.h"
-#include "nrf_gpio.h"
 #include "nrf_802154_peripherals.h"
 #include "nrf_802154_pib.h"
 #include "nrf_802154_rssi.h"
 #include "nrf_802154_trx.h"
+#include "nrf_gpio.h"
 #include "nrf_gpiote.h"
 #include "nrf_ppi.h"
 #include "nrf_timer.h"
@@ -65,6 +68,7 @@ typedef enum
 static nrf_802154_ant_diversity_config_t m_ant_div_config = /**< Antenna Diversity configuration. */
 {
     .ant_sel_pin = NRF_802154_ANT_DIVERSITY_ANT_SEL_PIN_DEFAULT,
+    .toggle_time = NRF_802154_ANT_DIVERSITY_TOGGLE_TIME_DEFAULT,
 };
 
 static ad_state_t m_ad_state            = AD_STATE_DISABLED; /// Automatic switcher state machine current state.
@@ -109,6 +113,9 @@ void nrf_802154_ant_diversity_init(void)
 #endif // ANT_DIVERSITY_PPI
 
     nrf_gpio_cfg_output(m_ant_div_config.ant_sel_pin);
+    // Configure the pin as a watcher - connect input buffer to the pin.
+    // This allows for reading the actual pin state instead of the desired pin value.
+    nrf_gpio_cfg_watcher(m_ant_div_config.ant_sel_pin);
 }
 
 bool nrf_802154_ant_diversity_antenna_set(nrf_802154_ant_diversity_antenna_t antenna)
@@ -130,23 +137,24 @@ bool nrf_802154_ant_diversity_antenna_set(nrf_802154_ant_diversity_antenna_t ant
 
 nrf_802154_ant_diversity_antenna_t nrf_802154_ant_diversity_antenna_get(void)
 {
-#if ANT_DIV_PPI
-    // While toggling via PPI, GPIOTE is responsible for ant_sel pin
-    // Different register has to be used for reading the pin state.
-    if (AD_STATE_TOGGLE == m_ad_state)
-    {
-        return nrf_gpio_pin_read(m_ant_div_config.ant_sel_pin);
-    }
-#endif // ANT_DIV_PPI
-    return nrf_gpio_pin_out_read(m_ant_div_config.ant_sel_pin);
+    return nrf_gpio_pin_read(m_ant_div_config.ant_sel_pin);
 }
 
-nrf_802154_ant_diversity_antenna_t nrf_802154_ant_diversity_last_rx_antenna_get(void)
+nrf_802154_ant_diversity_antenna_t nrf_802154_ant_diversity_last_rx_best_antenna_get(void)
 {
     return m_last_selected_antenna;
 }
 
-void nrf_802154_ant_diversity_antenna_toggle()
+/**
+ * @brief Switches the antenna currently in use.
+ *
+ * @note This function has no effect while antenna diversity module is currently
+ * toggling antenna in PPI variant - that is:
+ *  - Antenna diversity is in PPI variant and auto mode is enabled
+ *  - rx is enabled
+ *  - no PPDU is currently being received
+ */
+static void nrf_802154_ant_diversity_antenna_toggle()
 {
     nrf_gpio_pin_toggle(m_ant_div_config.ant_sel_pin);
 }
@@ -202,7 +210,7 @@ static void ad_timer_toggle_configure()
 
     nrf_timer_cc_write(ANT_DIV_TIMER,
                        NRF_TIMER_CC_CHANNEL0,
-                       nrf_timer_us_to_ticks(nrf_802154_pib_ant_diversity_toggle_time_get(),
+                       nrf_timer_us_to_ticks((uint32_t)m_ant_div_config.toggle_time,
                                              NRF_TIMER_FREQ_1MHz));
 
 #if ANT_DIVERSITY_SW
@@ -237,6 +245,8 @@ static void ad_timer_toggle_deconfigure()
     nrf_gpio_pin_write(m_ant_div_config.ant_sel_pin, nrf_802154_ant_diversity_antenna_get());
     nrf_gpiote_task_disable(NRF_802154_ANT_DIVERSITY_GPIOTE_CHANNEL);
     nrf_ppi_channel_disable(ANT_DIV_PPI);
+#else
+    assert(false);
 #endif
     // Anomaly 78: use SHUTDOWN instead of STOP.
     nrf_timer_task_trigger(ANT_DIV_TIMER, NRF_TIMER_TASK_SHUTDOWN);
@@ -346,6 +356,7 @@ void nrf_802154_ant_diversity_enable_notify()
 
         default:
             assert(false);
+            break;
     }
     nrf_802154_log_function_exit(NRF_802154_LOG_VERBOSITY_LOW);
 }
@@ -378,6 +389,7 @@ void nrf_802154_ant_diversity_disable_notify()
 
         default:
             assert(false);
+            break;
     }
     nrf_802154_log_function_exit(NRF_802154_LOG_VERBOSITY_LOW);
 }
@@ -406,6 +418,7 @@ void nrf_802154_ant_diversity_rx_started_notify()
 
         default:
             assert(false);
+            break;
     }
     nrf_802154_log_function_exit(NRF_802154_LOG_VERBOSITY_LOW);
 }
@@ -439,6 +452,7 @@ void nrf_802154_ant_diversity_rx_aborted_notify()
 
         default:
             assert(false);
+            break;
     }
     nrf_802154_log_function_exit(NRF_802154_LOG_VERBOSITY_LOW);
 }
@@ -470,6 +484,7 @@ void nrf_802154_ant_diversity_preamble_detected_notify()
 
         default:
             assert(false);
+            break;
     }
     nrf_802154_log_function_exit(NRF_802154_LOG_VERBOSITY_LOW);
 }
@@ -504,6 +519,7 @@ bool nrf_802154_ant_diversity_frame_started_notify()
 
         default:
             assert(false);
+            break;
     }
 
     nrf_802154_log_function_exit(NRF_802154_LOG_VERBOSITY_LOW);
@@ -539,6 +555,7 @@ void nrf_802154_ant_diversity_frame_received_notify()
 
         default:
             assert(false);
+            break;
     }
     nrf_802154_log_function_exit(NRF_802154_LOG_VERBOSITY_LOW);
 }
@@ -584,6 +601,7 @@ void nrf_802154_ant_diversity_preamble_timeout_notify()
 
         default:
             assert(false);
+            break;
     }
     nrf_802154_log_function_exit(NRF_802154_LOG_VERBOSITY_LOW);
 }
@@ -613,6 +631,7 @@ void NRF_802154_ANT_DIVERSITY_TIMER_IRQHANDLER()
 
         default:
             assert(false);
+            break;
     }
 
     nrf_timer_event_clear(ANT_DIV_TIMER, NRF_TIMER_EVENT_COMPARE0);

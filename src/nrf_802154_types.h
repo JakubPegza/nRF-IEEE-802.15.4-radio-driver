@@ -235,6 +235,24 @@ typedef uint8_t nrf_802154_ant_diversity_antenna_t;
 #define NRF_802154_ANT_DIVERSITY_ANTENNA_NONE 0x02 // !< Used to indicate that antenna for the last reception was not selected via antenna diversity algorithm.
 
 /**
+ * Default antenna used in cases where no antenna was specified.
+ */
+#ifndef NRF_802154_ANT_DIVERSITY_DEFAULT_ANTENNA
+#define NRF_802154_ANT_DIVERSITY_DEFAULT_ANTENNA NRF_802154_ANT_DIVERSITY_ANTENNA_1
+#endif
+
+/**
+ * @brief Configuration of the antenna diversity module.
+ *
+ */
+typedef struct
+{
+    uint8_t ant_sel_pin; // !< Pin used for antenna selection.
+    // !< Should not be changed after calling @ref nrf_802154_ant_diversity_init.
+    uint8_t toggle_time; // < Time between antenna switches in automatic mode [us].
+} nrf_802154_ant_diversity_config_t;
+
+/**
  * @brief Type of structure holding statistic counters.
  *
  * This structure holds counters of @c uint32_t type only.

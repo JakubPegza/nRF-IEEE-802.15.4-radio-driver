@@ -39,23 +39,6 @@
 
 #include "nrf_802154_types.h"
 
-#ifndef NRF_802154_ANT_DIVERSITY_ANT_SEL_PIN_DEFAULT
-#define NRF_802154_ANT_DIVERSITY_ANT_SEL_PIN_DEFAULT 23
-#endif
-
-#ifndef RSSI_SETTLE_TIME_US
-#define RSSI_SETTLE_TIME_US 16
-#endif
-
-/**
- * @brief Configuration of the antenna diversity module.
- *
- */
-typedef struct
-{
-    uint8_t ant_sel_pin; // !< Pin used for antenna selection.
-} nrf_802154_ant_diversity_config_t;
-
 /**
  * @brief Initializes antenna diversity module.
  *
@@ -92,24 +75,13 @@ nrf_802154_ant_diversity_antenna_t nrf_802154_ant_diversity_antenna_get(void);
  *
  * @note In three cases @ref NRF_802154_ANT_DIVERSITY_ANTENNA_NONE may be returned:
  *  - No frame was received yet.
- *  - Last frame was not received with antenna diversity auto mode enabled.
+ *  - Last frame was received with antenna diversity auto mode disabled.
  *  - RSSI measurements didn't have enough time to finish during last frame reception
- *    and antenna was selected at random.
+ *    and it is unspecified which antenna was selected.
  *
  * @return Antenna selected during last successful reception in automatic mode.
  */
-nrf_802154_ant_diversity_antenna_t nrf_802154_ant_diversity_last_rx_antenna_get(void);
-
-/**
- * @brief Switches the antenna currently in use.
- *
- * @note This function has no effect while antenna diversity module is currently
- * toggling antenna in PPI variant - that is:
- *  - Antenna diversity is in PPI variant and auto mode is enabled
- *  - rx is enabled
- *  - no PPDU is currently being received
- */
-void nrf_802154_ant_diversity_antenna_toggle();
+nrf_802154_ant_diversity_antenna_t nrf_802154_ant_diversity_last_rx_best_antenna_get(void);
 
 /**
  * @brief Sets the antenna diversity configuration.

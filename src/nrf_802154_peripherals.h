@@ -107,23 +107,29 @@ extern "C" {
     NRFX_CONCAT_2(NRF_TIMER, NRF_802154_COUNTER_TIMER_INSTANCE_NO)
 
 #if ENABLE_ANT_DIVERSITY
+
+/**
+ * @brief Default pin used for toggling the antenna.
+ */
+#ifndef NRF_802154_ANT_DIVERSITY_ANT_SEL_PIN_DEFAULT
+#define NRF_802154_ANT_DIVERSITY_ANT_SEL_PIN_DEFAULT 23
+#endif
+
 /**
  * @def NRF_802154_ANT_DIVERSITY_TIMER_INSTANCE_NO
  *
  * Number of the timer instance used for detecting when PSDU is being received.
- *
  */
 #ifndef NRF_802154_ANT_DIVERSITY_TIMER_INSTANCE_NO
 #define NRF_802154_ANT_DIVERSITY_TIMER_INSTANCE_NO 3
 #endif
 
 /**
- * @def NRF_802154_COUNTER_TIMER_INSTANCE
+ * @def NRF_802154_ANT_DIVERSITY_TIMER_INSTANCE
  *
- * The timer instance used by the driver for detecting when PSDU is being received.
+ * The timer instance used by the driver for toggling the antenna and delaying RSSI measurements
+ * for antenna diversity.
  *
- * @note This configuration is used only when the NRF_RADIO_EVENT_BCMATCH event handling is disabled
- *       (see @ref NRF_802154_DISABLE_BCC_MATCHING).
  */
 #define NRF_802154_ANT_DIVERSITY_TIMER_INSTANCE \
     NRFX_CONCAT_2(NRF_TIMER, NRF_802154_ANT_DIVERSITY_TIMER_INSTANCE_NO)

@@ -75,6 +75,10 @@
 #include "fem/nrf_fem_protocol_api.h"
 #endif
 
+#if ENABLE_ANT_DIVERSITY
+#include "nrf_802154_ant_diversity.h"
+#endif // ENABLE_ANT_DIVERSITY
+
 #define RAW_LENGTH_OFFSET  0
 #define RAW_PAYLOAD_OFFSET 1
 
@@ -270,7 +274,7 @@ void nrf_802154_fem_control_cfg_get(nrf_802154_fem_control_cfg_t * p_cfg)
 #endif // ENABLE_FEM
 
 #if ENABLE_ANT_DIVERSITY
-bool nrf_802154_ant_diversity_mode_set(nrf_802154_ant_diversity_mode_t mode)
+bool nrf_802154_antenna_diversity_mode_set(nrf_802154_ant_diversity_mode_t mode)
 {
     bool result = nrf_802154_pib_ant_diversity_mode_set(mode);
 
@@ -282,12 +286,12 @@ bool nrf_802154_ant_diversity_mode_set(nrf_802154_ant_diversity_mode_t mode)
     return result;
 }
 
-nrf_802154_ant_diversity_mode_t nrf_802154_ant_diversity_mode_get(void)
+nrf_802154_ant_diversity_mode_t nrf_802154_antenna_diversity_mode_get(void)
 {
     return nrf_802154_pib_ant_diversity_mode_get();
 }
 
-bool nrf_802154_antenna_set(nrf_802154_ant_diversity_antenna_t antenna)
+bool nrf_802154_antenna_diversity_antenna_set(nrf_802154_ant_diversity_antenna_t antenna)
 {
     bool result = nrf_802154_pib_ant_diversity_antenna_set(antenna);
 
@@ -300,33 +304,23 @@ bool nrf_802154_antenna_set(nrf_802154_ant_diversity_antenna_t antenna)
     return result;
 }
 
-nrf_802154_ant_diversity_antenna_t nrf_802154_antenna_get(void)
+nrf_802154_ant_diversity_antenna_t nrf_802154_antenna_diversity_antenna_get(void)
 {
     return nrf_802154_pib_ant_diversity_antenna_get();
 }
 
-void nrf_802154_antenna_config_set(nrf_802154_ant_diversity_config_t config)
+void nrf_802154_antenna_diversity_config_set(nrf_802154_ant_diversity_config_t config)
 {
     nrf_802154_ant_diversity_config_set(config);
 
 }
 
-nrf_802154_ant_diversity_antenna_t nrf_802154_last_rx_antenna_get(void)
+nrf_802154_ant_diversity_antenna_t nrf_802154_antenna_diversity_last_rx_best_antenna_get(void)
 {
-    return nrf_802154_ant_diversity_last_rx_antenna_get();
+    return nrf_802154_ant_diversity_last_rx_best_antenna_get();
 }
 
-void nrf_802154_ant_diversity_toggle_time_set(uint8_t toggle_time)
-{
-    nrf_802154_pib_ant_diversity_toggle_time_set(toggle_time);
-}
-
-uint32_t nrf_802154_ant_diversity_toggle_time_get()
-{
-    return nrf_802154_pib_ant_diversity_toggle_time_get();
-}
-
-nrf_802154_ant_diversity_config_t nrf_802154_antenna_config_get(void)
+nrf_802154_ant_diversity_config_t nrf_802154_antenna_diversity_config_get(void)
 {
     return nrf_802154_ant_diversity_config_get();
 }

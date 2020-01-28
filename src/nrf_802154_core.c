@@ -74,6 +74,9 @@
 #include "platform/hp_timer/nrf_802154_hp_timer.h"
 
 #include "nrf_802154_core_hooks.h"
+#if ENABLE_ANT_DIVERSITY
+#include "nrf_802154_ant_diversity.h"
+#endif // ENABLE_ANT_DIVERSITY
 
 /// Delay before first check of received frame: 24 bits is PHY header and MAC Frame Control field.
 #define BCC_INIT                    (3 * 8)
@@ -1407,7 +1410,7 @@ static void on_rx_prestarted_timeout(void * p_context)
     assert(in_crit_sect);
     (void)in_crit_sect;
 
-    #if ENABLE_ANT_DIVERSITY
+#if ENABLE_ANT_DIVERSITY
     nrf_802154_ant_diversity_preamble_timeout_notify();
 
     /**
@@ -1420,7 +1423,7 @@ static void on_rx_prestarted_timeout(void * p_context)
     {
         nrf_802154_ant_diversity_preamble_detected_notify();
     }
-    #endif // ENABLE_ANT_DIVERSITY
+#endif // ENABLE_ANT_DIVERSITY
 
     /* If nrf_802154_trx_receive_frame_prestarted boosted preconditions beyond those normally
      * required by current state, they need to be restored now.

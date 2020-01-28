@@ -697,10 +697,7 @@ static void rx_antenna_update(void)
             break;
     }
 
-    if (!result)
-    {
-        assert(false);
-    }
+    assert(result);
 }
 
 /**
@@ -722,7 +719,7 @@ static void tx_antenna_update(void)
 
         case NRF_802154_ANT_DIVERSITY_MODE_MANUAL:
         case NRF_802154_ANT_DIVERSITY_MODE_AUTO:
-            result = nrf_802154_ant_diversity_antenna_set(NRF_802154_ANT_DIVERSITY_ANTENNA_1);
+            result = nrf_802154_ant_diversity_antenna_set(NRF_802154_ANT_DIVERSITY_DEFAULT_ANTENNA);
             break;
 
         default:
@@ -758,7 +755,7 @@ void nrf_802154_trx_antenna_update(void)
             break;
 
         default:
-            /** Intentionally empty **/
+            /* Intentionally empty */
             break;
     }
 }
@@ -2547,7 +2544,7 @@ void nrf_802154_radio_irq_handler(void)
     // That's why we check here EGU's EGU_HELPER1_INTMASK.
     // The RADIO does not have interrupt from HELPER1 event.
     if (nrf_egu_int_enable_check(NRF_802154_SWI_EGU_INSTANCE, EGU_HELPER1_INTMASK) &&
-        nrf_radio_event_check(NRF_RADIO_EVENT_HELPER1) && (m_trx_state == TRX_STATE_RXFRAME))
+        nrf_radio_event_check(NRF_RADIO_EVENT_HELPER1))
     {
         nrf_radio_event_clear(NRF_RADIO_EVENT_HELPER1);
         nrf_egu_event_clear(NRF_802154_SWI_EGU_INSTANCE, EGU_HELPER1_EVENT);
