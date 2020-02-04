@@ -193,6 +193,11 @@ extern "C" {
 #define NRF_802154_DISABLE_BCC_MATCHING 0
 #endif
 
+#if (NRF_802154_DISABLE_BCC_MATCHING) && (ENABLE_ANT_DIVERSITY)
+#error NRF_802154_DISABLE_BCC_MATCHING option is incompatible with antenna diversity. \
+    Please disable antenna diversity or set NRF_802154_DISABLE_BCC_MATCHING to 0.
+#endif
+
 /**
  * @def NRF_802154_NOTIFY_CRCERROR
  *
