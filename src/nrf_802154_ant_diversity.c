@@ -223,7 +223,7 @@ static void ad_timer_toggle_configure()
     nrf_gpiote_task_enable(NRF_802154_ANT_DIVERSITY_GPIOTE_CHANNEL);
     nrf_ppi_channel_enable(ANT_DIV_PPI);
 #else
-    assert(false);
+#error Antenna diversity variant unsupported or not implemented
 #endif
 
     nrf_timer_task_trigger(ANT_DIV_TIMER, NRF_TIMER_TASK_CLEAR);
@@ -246,7 +246,7 @@ static void ad_timer_toggle_deconfigure()
     nrf_gpiote_task_disable(NRF_802154_ANT_DIVERSITY_GPIOTE_CHANNEL);
     nrf_ppi_channel_disable(ANT_DIV_PPI);
 #else
-    assert(false);
+#error Antenna diversity variant unsupported or not implemented
 #endif
     // Anomaly 78: use SHUTDOWN instead of STOP.
     nrf_timer_task_trigger(ANT_DIV_TIMER, NRF_TIMER_TASK_SHUTDOWN);
