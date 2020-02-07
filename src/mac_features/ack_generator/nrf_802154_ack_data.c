@@ -199,11 +199,11 @@ static int8_t addr_compare(const uint8_t * p_first_addr,
  * @retval true   Address @p p_addr is in the list.
  * @retval false  Address @p p_addr is not in the list.
  */
-static bool addr_binary_search(const uint8_t * p_addr,
-                               const uint8_t * p_addr_array,
-                               uint32_t      * p_location,
-                               uint8_t         data_type,
-                               bool            extended)
+static bool addr_binary_search(const uint8_t       * p_addr,
+                               const uint8_t       * p_addr_array,
+                               uint32_t            * p_location,
+                               nrf_802154_ack_data_t data_type,
+                               bool                  extended)
 {
     uint32_t addr_array_len = 0;
     uint8_t  entry_size     = 0;
@@ -288,10 +288,10 @@ static bool addr_binary_search(const uint8_t * p_addr,
  * @retval true   Address @p p_addr is in the list.
  * @retval false  Address @p p_addr is not in the list.
  */
-static bool addr_index_find(const uint8_t * p_addr,
-                            uint32_t      * p_location,
-                            uint8_t         data_type,
-                            bool            extended)
+static bool addr_index_find(const uint8_t       * p_addr,
+                            uint32_t            * p_location,
+                            nrf_802154_ack_data_t data_type,
+                            bool                  extended)
 {
     uint8_t * p_addr_array;
     bool      valid_data_type = true;
@@ -431,7 +431,10 @@ static bool addr_match_standard_compliant(const uint8_t * p_frame)
  * @retval true   Address @p p_addr has been added to the list successfully.
  * @retval false  Address @p p_addr could not be added to the list.
  */
-static bool addr_add(const uint8_t * p_addr, uint32_t location, uint8_t data_type, bool extended)
+static bool addr_add(const uint8_t       * p_addr,
+                     uint32_t              location,
+                     nrf_802154_ack_data_t data_type,
+                     bool                  extended)
 {
     uint32_t * p_addr_array_len;
     uint32_t   max_addr_array_len;
@@ -508,7 +511,7 @@ static bool addr_add(const uint8_t * p_addr, uint32_t location, uint8_t data_typ
  * @retval true   Address @p p_addr has been removed from the list successfully.
  * @retval false  Address @p p_addr could not removed from the list.
  */
-static bool addr_remove(uint32_t location, uint8_t data_type, bool extended)
+static bool addr_remove(uint32_t location, nrf_802154_ack_data_t data_type, bool extended)
 {
     uint32_t * p_addr_array_len;
     uint8_t  * p_addr_array;
@@ -599,11 +602,11 @@ void nrf_802154_ack_data_enable(bool enabled)
     m_pending_bit.enabled = enabled;
 }
 
-bool nrf_802154_ack_data_for_addr_set(const uint8_t * p_addr,
-                                      bool            extended,
-                                      uint8_t         data_type,
-                                      const void    * p_data,
-                                      uint8_t         data_len)
+bool nrf_802154_ack_data_for_addr_set(const uint8_t       * p_addr,
+                                      bool                  extended,
+                                      nrf_802154_ack_data_t data_type,
+                                      const void          * p_data,
+                                      uint8_t               data_len)
 {
     uint32_t location = 0;
 
@@ -623,7 +626,9 @@ bool nrf_802154_ack_data_for_addr_set(const uint8_t * p_addr,
     }
 }
 
-bool nrf_802154_ack_data_for_addr_clear(const uint8_t * p_addr, bool extended, uint8_t data_type)
+bool nrf_802154_ack_data_for_addr_clear(const uint8_t       * p_addr,
+                                        bool                  extended,
+                                        nrf_802154_ack_data_t data_type)
 {
     uint32_t location = 0;
 
@@ -637,7 +642,7 @@ bool nrf_802154_ack_data_for_addr_clear(const uint8_t * p_addr, bool extended, u
     }
 }
 
-void nrf_802154_ack_data_reset(bool extended, uint8_t data_type)
+void nrf_802154_ack_data_reset(bool extended, nrf_802154_ack_data_t data_type)
 {
     switch (data_type)
     {
