@@ -215,8 +215,7 @@ typedef uint8_t nrf_802154_ifs_mode_t;
  */
 typedef uint8_t nrf_802154_ant_diversity_mode_t;
 
-#define NRF_802154_ANT_DIVERSITY_MODE_DISABLED 0x00 // !< Antenna diversity is disabled - Antenna will not be controlled by ant_diversity module.
-// !< Upon entering this mode, antenna 1 will be selected.
+#define NRF_802154_ANT_DIVERSITY_MODE_DISABLED 0x00 // !< Antenna diversity is disabled - Antenna will not be controlled by ant_diversity module. While in this mode, current antenna is unspecified.
 #define NRF_802154_ANT_DIVERSITY_MODE_MANUAL   0x01 // !< Antenna is selected manually
 #define NRF_802154_ANT_DIVERSITY_MODE_AUTO     0x02 // !< Antenna is selected automatically based on RSSI.
 
@@ -247,9 +246,8 @@ typedef uint8_t nrf_802154_ant_diversity_antenna_t;
  */
 typedef struct
 {
-    uint8_t ant_sel_pin; // !< Pin used for antenna selection.
-    // !< Should not be changed after calling @ref nrf_802154_ant_diversity_init.
-    uint8_t toggle_time; // < Time between antenna switches in automatic mode [us].
+    uint8_t ant_sel_pin; // !< Pin used for antenna selection. Should not be changed after calling @ref nrf_802154_ant_diversity_init.
+    uint8_t toggle_time; // !< Time between antenna switches in automatic mode [us].
 } nrf_802154_ant_diversity_config_t;
 
 /**
