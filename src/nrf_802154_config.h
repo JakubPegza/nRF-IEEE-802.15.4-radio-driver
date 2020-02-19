@@ -520,6 +520,14 @@ extern "C" {
  * @{
  */
 
+/**
+ * @def NRF_802154_ANT_DIVERSITY_TOGGLE_TIME_DEFAULT
+ *
+ * Defines default time in microseconds between antenna toggles when waiting for preamble in
+ * antenna diversity automatic mode.
+ * Should not be longer than preamble length (frame loss may occur in border instances), and cannot be
+ * longer than 255 us.
+ */
 #ifndef NRF_802154_ANT_DIVERSITY_TOGGLE_TIME_DEFAULT
 #define NRF_802154_ANT_DIVERSITY_TOGGLE_TIME_DEFAULT 40
 #endif
