@@ -326,7 +326,6 @@ nrf_802154_ant_diversity_antenna_t nrf_802154_antenna_diversity_rx_antenna_get(v
     return nrf_802154_pib_ant_diversity_rx_antenna_get();
 }
 
-
 bool nrf_802154_antenna_diversity_tx_antenna_set(nrf_802154_ant_diversity_antenna_t antenna)
 {
     bool result = nrf_802154_pib_ant_diversity_tx_antenna_set(antenna);

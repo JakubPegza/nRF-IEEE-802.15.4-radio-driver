@@ -718,7 +718,8 @@ static void tx_antenna_update(void)
             break;
 
         case NRF_802154_ANT_DIVERSITY_MODE_MANUAL:
-            result = nrf_802154_ant_diversity_antenna_set(nrf_802154_pib_ant_diversity_tx_antenna_get());
+            result = nrf_802154_ant_diversity_antenna_set(
+                nrf_802154_pib_ant_diversity_tx_antenna_get());
             break;
 
         case NRF_802154_ANT_DIVERSITY_MODE_AUTO:
